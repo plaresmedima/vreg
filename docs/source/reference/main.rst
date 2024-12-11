@@ -13,7 +13,6 @@ Main
    :template: custom-class-template.rst
    :recursive:
 
-   Tissue
-   TissueArray
+   fill_gaps
 
 

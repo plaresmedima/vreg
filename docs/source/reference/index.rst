@@ -17,5 +17,5 @@ what they are and what they do.
 .. toctree::
    :maxdepth: 2
 
-   fill_gaps
+   main
    

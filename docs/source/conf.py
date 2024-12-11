@@ -123,7 +123,7 @@ source_suffix = ['.rst', '.md']
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = '_static/ibeat-logo.jpg'
+html_logo = '_static/ibeat-logo.png'
 
 # The base URL which points to the root of the HTML documentation. 
 # It is used to indicate the location of document
