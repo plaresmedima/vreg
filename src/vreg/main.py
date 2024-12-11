@@ -17,6 +17,16 @@ from skimage.draw import ellipsoid
 
 
 def fill_gaps(data, loc, mask=None):
+    """Fill gaps in data by interpolation
+
+    Args:
+        data (_type_): _description_
+        loc (_type_): _description_
+        mask (_type_, optional): _description_. Defaults to None.
+
+    Returns:
+        _type_: _description_
+    """
     # Fill gaps in data by interpolation
     # data is an array with values
     # loc is a mask array defining where to interpolate (0=interpolate, 1=value)
