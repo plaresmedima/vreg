@@ -1,0 +1,618 @@
+{
+ "OFF_SCREEN": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "bool"
+  }
+ ],
+ "affine_parameters": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "defo": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "defo.flatten": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  }
+ ],
+ "defo_estimate": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "defo_init": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "defo_init.flatten": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  }
+ ],
+ "err": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "float64"
+  }
+ ],
+ "input_affine": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "input_affine.copy": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  }
+ ],
+ "input_data": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "input_data.shape": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "tuple"
+  }
+ ],
+ "input_shape": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "nodes": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ],
+ "np.array": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "array"
+  }
+ ],
+ "np.concatenate": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "_ArrayFunctionDispatcher"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "concatenate"
+  }
+ ],
+ "np.linalg.norm": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "_ArrayFunctionDispatcher"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy.linalg",
+   "module_short": "numpy.linalg",
+   "name": "norm"
+  }
+ ],
+ "np.pi": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "float"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "pi"
+  }
+ ],
+ "np.zeros": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "zeros"
+  }
+ ],
+ "output_affine": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "output_data": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "output_data_estimate": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "output_shape": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "pixel_spacing": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "pl": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting.plotter",
+   "module_short": "pyvista",
+   "name": "Plotter"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting",
+   "module_short": "pyvista",
+   "name": "Plotter"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista",
+   "module_short": "pyvista",
+   "name": "Plotter"
+  }
+ ],
+ "pl.show": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting.plotter",
+   "module_short": "pyvista",
+   "name": "Plotter.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting",
+   "module_short": "pyvista",
+   "name": "Plotter.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista",
+   "module_short": "pyvista",
+   "name": "Plotter.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting.plotter",
+   "module_short": "pyvista.plotting.plotter",
+   "name": "BasePlotter.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting",
+   "module_short": "pyvista.plotting",
+   "name": "BasePlotter.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista",
+   "module_short": "pyvista",
+   "name": "BasePlotter.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting.picking",
+   "module_short": "pyvista.plotting.picking",
+   "name": "PickingHelper.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting",
+   "module_short": "pyvista.plotting",
+   "name": "PickingHelper.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista",
+   "module_short": "pyvista",
+   "name": "PickingHelper.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting.widgets",
+   "module_short": "pyvista.plotting.widgets",
+   "name": "WidgetHelper.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting",
+   "module_short": "pyvista.plotting",
+   "name": "WidgetHelper.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista",
+   "module_short": "pyvista",
+   "name": "WidgetHelper.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting.picking",
+   "module_short": "pyvista.plotting.picking",
+   "name": "PickingMethods.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting",
+   "module_short": "pyvista.plotting",
+   "name": "PickingMethods.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista",
+   "module_short": "pyvista",
+   "name": "PickingMethods.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting.picking",
+   "module_short": "pyvista.plotting.picking",
+   "name": "PickingInterface.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista.plotting",
+   "module_short": "pyvista.plotting",
+   "name": "PickingInterface.show"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pyvista",
+   "module_short": "pyvista",
+   "name": "PickingInterface.show"
+  }
+ ],
+ "rotation": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "rotation_angle": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "float"
+  }
+ ],
+ "rotation_axis": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "stretch": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "translation": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "vreg.affine_deformation_field": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "affine_deformation_field"
+  }
+ ],
+ "vreg.affine_freeform": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "affine_freeform"
+  }
+ ],
+ "vreg.affine_matrix": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "affine_matrix"
+  }
+ ],
+ "vreg.align": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "align"
+  }
+ ],
+ "vreg.deformation_field_shape": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "deformation_field_shape"
+  }
+ ],
+ "vreg.freeform": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "freeform"
+  }
+ ],
+ "vreg.generate": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "generate"
+  }
+ ],
+ "vreg.plot_affine_resliced": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "plot_affine_resliced"
+  }
+ ],
+ "vreg.plot_affine_transformed": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "plot_affine_transformed"
+  }
+ ],
+ "vreg.sum_of_squares": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "sum_of_squares"
+  }
+ ],
+ "window": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "bool"
+  }
+ ]
+}

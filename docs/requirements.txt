@@ -16,4 +16,16 @@ sphinxcontrib-serializinghtml
 sphinx-gallery
 sphinx-exec-code
 
+# pvista docs dynamic
+# https://github.com/pyvista/pyvista-docs-dynamic/blob/main/requirements.txt
+pyvista[jupyter,trame]>=0.43.1
+pypandoc
+pytest-sphinx
+Sphinx
+sphinx-autobuild
+sphinx-toolbox
+sphinxcontrib-asciinema
+sphinxcontrib-websupport
+typed-ast
+
 

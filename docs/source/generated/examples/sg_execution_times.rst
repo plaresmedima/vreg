@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.000** total execution time for 0 files **from generated\examples**:
+**00:13.790** total execution time for 24 files **from generated\examples**:
 
 .. container::
 
@@ -32,6 +32,75 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - N/A
-     - N/A
-     - N/A
+   * - :ref:`sphx_glr_generated_examples_plot_freeform.py` (``plot_freeform.py``)
+     - 00:13.790
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_affine.py` (``plot_affine.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_affine_reslice.py` (``plot_affine_reslice.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_affine_transform.py` (``plot_affine_transform.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_affine_transform_reshape.py` (``plot_affine_transform_reshape.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_affine_transform_reslice.py` (``plot_affine_transform_reslice.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_align_affine.py` (``plot_align_affine.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_align_freeform.py` (``plot_align_freeform.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_align_rigid.py` (``plot_align_rigid.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_align_rotation.py` (``plot_align_rotation.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_align_stretch.py` (``plot_align_stretch.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_align_translation.py` (``plot_align_translation.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_bounding_box.py` (``plot_bounding_box.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_rigid.py` (``plot_rigid.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_rigid_reshape.py` (``plot_rigid_reshape.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_rotate.py` (``plot_rotate.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_rotate_around.py` (``plot_rotate_around.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_rotate_around_reshape.py` (``plot_rotate_around_reshape.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_rotate_reshape.py` (``plot_rotate_reshape.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_stretch.py` (``plot_stretch.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_stretch_reshape.py` (``plot_stretch_reshape.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_translate.py` (``plot_translate.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_translate_reshape.py` (``plot_translate_reshape.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_volume.py` (``plot_volume.py``)
+     - 00:00.000
+     - 0.0

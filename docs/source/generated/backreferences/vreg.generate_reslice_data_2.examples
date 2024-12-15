@@ -1,0 +1,42 @@
+
+
+Examples using ``vreg.generate_reslice_data_2``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+.. start-sphx-glr-thumbnails
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plot affine with reslice">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_affine_reslice_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_affine_reslice.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot affine with reslice</div>
+    </div>
+
+
+.. only:: not html
+
+ * :ref:`sphx_glr_generated_examples_plot_affine_reslice.py`
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+

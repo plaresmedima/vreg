@@ -1,0 +1,105 @@
+
+
+Examples using ``vreg.affine_resolution``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+.. start-sphx-glr-thumbnails
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plot align stretch">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_align_stretch_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_align_stretch.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot align stretch</div>
+    </div>
+
+
+.. only:: not html
+
+ * :ref:`sphx_glr_generated_examples_plot_align_stretch.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plot align rotation">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_align_rotation_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_align_rotation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot align rotation</div>
+    </div>
+
+
+.. only:: not html
+
+ * :ref:`sphx_glr_generated_examples_plot_align_rotation.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plot align affine">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_align_affine_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_align_affine.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot align affine</div>
+    </div>
+
+
+.. only:: not html
+
+ * :ref:`sphx_glr_generated_examples_plot_align_affine.py`
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plot align rigid">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_align_rigid_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_align_rigid.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Plot align rigid</div>
+    </div>
+
+
+.. only:: not html
+
+ * :ref:`sphx_glr_generated_examples_plot_align_rigid.py`
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+

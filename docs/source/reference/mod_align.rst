@@ -1,8 +1,8 @@
-.. _main:
+.. _align:
 
-****
-Main
-****
+*****
+Align
+*****
 
 .. currentmodule:: vreg
 
@@ -13,6 +13,8 @@ Main
    :template: custom-class-template.rst
    :recursive:
 
-   fill_gaps
+   align
+
+   
 
 

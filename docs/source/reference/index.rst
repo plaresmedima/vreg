@@ -17,5 +17,7 @@ what they are and what they do.
 .. toctree::
    :maxdepth: 2
 
-   main
+   mod_align
+   plot
+   utils
    

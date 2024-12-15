@@ -1,0 +1,42 @@
+
+
+Examples using ``vreg.goodness_of_alignment``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+.. start-sphx-glr-thumbnails
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Align freeform">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr__plot_align_freeform_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples__plot_align_freeform.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Align freeform</div>
+    </div>
+
+
+.. only:: not html
+
+ * :ref:`sphx_glr_generated_examples__plot_align_freeform.py`
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
