@@ -15,45 +15,24 @@ Examples using ``vreg.align``
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Plot align rigid">
+    <div class="sphx-glr-thumbcontainer" tooltip="3D translation: multislice 2D image to 3D mask">
 
 .. only:: html
 
-  .. image:: /generated/examples/images/thumb/sphx_glr_plot_align_rigid_thumb.png
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_3d_multislice_translation_t2_thumb.png
     :alt:
 
-  :ref:`sphx_glr_generated_examples_plot_align_rigid.py`
+  :ref:`sphx_glr_generated_examples_plot_3d_multislice_translation_t2.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Plot align rigid</div>
+      <div class="sphx-glr-thumbnail-title">3D translation: multislice 2D image to 3D mask</div>
     </div>
 
 
 .. only:: not html
 
- * :ref:`sphx_glr_generated_examples_plot_align_rigid.py`
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Align freeform">
-
-.. only:: html
-
-  .. image:: /generated/examples/images/thumb/sphx_glr_plot_align_freeform_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_generated_examples_plot_align_freeform.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Align freeform</div>
-    </div>
-
-
-.. only:: not html
-
- * :ref:`sphx_glr_generated_examples_plot_align_freeform.py`
+ * :ref:`sphx_glr_generated_examples_plot_3d_multislice_translation_t2.py`
 
 .. thumbnail-parent-div-close
 

@@ -1,5 +1,6 @@
 import sys
 import pickle
+from vreg import volume
 
 # filepaths need to be identified with importlib_resources
 # rather than __file__ as the latter does not work at runtime
@@ -14,14 +15,14 @@ else:
     import importlib.resources as importlib_resources
 
 
-def fetch(dataset: str) -> dict:
+def fetch(dataset: str) -> volume.Volume:
     """Fetch a dataset included in vreg
 
     Args:
         dataset (str): name of the dataset. See below for options.
 
     Returns:
-        dict: Data as a dictionary.
+        Volume: Data as a vreg.Volume.
 
     Notes:
 
@@ -48,6 +49,6 @@ def fetch(dataset: str) -> dict:
     datafile = str(f.joinpath(dataset + '.pkl'))
 
     with open(datafile, 'rb') as fp:
-        data_dict = pickle.load(fp)
+        vol = pickle.load(fp)
 
-    return data_dict
+    return vol

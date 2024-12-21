@@ -196,6 +196,12 @@ def extract_slice(array, affine, z, slice_thickness=None):
     affine_z = affine_slice(affine, z, slice_thickness=slice_thickness)
     return array_z, affine_z
 
+def ortho_translation(affine, translation):
+    row_cosine = affine[:3,0]/np.linalg.norm(affine[:3,0])
+    column_cosine = affine[:3,1]/np.linalg.norm(affine[:3,1])
+    slice_cosine = np.cross(row_cosine, column_cosine)
+    return translation[0]*row_cosine + translation[1]*column_cosine + translation[2]*slice_cosine
+
 def inslice_translation(affine, translation):
     row_cosine = affine[:3,0]/np.linalg.norm(affine[:3,0])
     column_cosine = affine[:3,1]/np.linalg.norm(affine[:3,1])

@@ -1,0 +1,42 @@
+
+
+Examples using ``vreg.Volume``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+.. start-sphx-glr-thumbnails
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="3D translation: multislice 2D image to 3D mask">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_3d_multislice_translation_t2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_3d_multislice_translation_t2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">3D translation: multislice 2D image to 3D mask</div>
+    </div>
+
+
+.. only:: not html
+
+ * :ref:`sphx_glr_generated_examples_plot_3d_multislice_translation_t2.py`
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+

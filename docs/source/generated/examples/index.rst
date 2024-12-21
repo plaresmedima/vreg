@@ -207,6 +207,23 @@ Examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="3D translation: 3D image to 3D mask">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_3d_mask_translation_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_3d_mask_translation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">3D translation: 3D image to 3D mask</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Plot bounding box">
 
 .. only:: html
@@ -270,6 +287,23 @@ Examples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Plot align translation</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="2D in-slice translation: 2D multislice image to 3D mask">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_inslice_translation_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_inslice_translation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">2D in-slice translation: 2D multislice image to 3D mask</div>
     </div>
 
 
@@ -426,6 +460,40 @@ Examples
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="3D translation: multislice 2D image to 3D mask">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_3d_multislice_translation_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_3d_multislice_translation.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">3D translation: multislice 2D image to 3D mask</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="3D translation: multislice 2D image to 3D mask">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_3d_multislice_translation_t2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_3d_multislice_translation_t2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">3D translation: multislice 2D image to 3D mask</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -447,10 +515,12 @@ Examples
    /generated/examples/plot_rigid_reshape
    /generated/examples/plot_affine
    /generated/examples/plot_rotate_around
+   /generated/examples/plot_3d_mask_translation
    /generated/examples/plot_bounding_box
    /generated/examples/plot_affine_reslice
    /generated/examples/plot_translate_reshape
    /generated/examples/plot_align_translation
+   /generated/examples/plot_inslice_translation
    /generated/examples/plot_affine_transform
    /generated/examples/plot_affine_transform_reshape
    /generated/examples/plot_align_rotation
@@ -460,6 +530,8 @@ Examples
    /generated/examples/plot_align_affine
    /generated/examples/plot_freeform
    /generated/examples/plot_align_freeform
+   /generated/examples/plot_3d_multislice_translation
+   /generated/examples/plot_3d_multislice_translation_t2
 
 
 

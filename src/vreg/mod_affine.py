@@ -45,7 +45,17 @@ def apply_inverse_affine(
     return output_data
 
 
-def affine_reslice(input_data, input_affine, output_affine, output_shape=None, **kwargs):
+def affine_reslice(
+        input_data, input_affine:np.ndarray, 
+        output_affine:np.ndarray, output_shape=None, 
+        **kwargs):
+
+    # If the output shape is 2d, add a 3d dimension of size 1 for the calculation
+    output_2d = False
+    if output_shape is not None:
+        output_2d = np.size(output_shape)==2
+        if output_2d:
+            output_shape = output_shape + (1,)
 
     # If 2d array, add a 3d dimension of size 1
     if input_data.ndim == 2: 
@@ -72,6 +82,10 @@ def affine_reslice(input_data, input_affine, output_affine, output_shape=None, *
     # Reslice input data to output geometry
     transform = np.linalg.inv(input_affine).dot(output_affine) # Ai B
     output_data = apply_inverse_affine(input_data, transform, output_shape, **kwargs)
+
+    # If a 2d output shape was requested, return a 2d array
+    if output_2d:
+        output_data = output_data[:,:,0]
 
     return output_data, output_affine
 
@@ -138,102 +152,6 @@ def affine_reslice_slice_by_slice(input_data, input_affine, output_affine, outpu
     return output_data, output_affine
 
 
-
-
-def translate_inslice(input_data, input_affine, output_shape, output_affine, translation, **kwargs):
-    transformation = vreg.utils.affine_matrix(translation=vreg.utils.inslice_translation(input_affine, translation))
-    return affine_transform_and_reslice(input_data, input_affine, output_shape, output_affine, transformation, **kwargs)
-
-def translate(input_data, input_affine, output_shape, output_affine, translation, **kwargs):
-    transformation = vreg.utils.affine_matrix(translation=translation)
-    return affine_transform_and_reslice(input_data, input_affine, output_shape, output_affine, transformation, **kwargs)
-
-def translate_reshape(input_data, input_affine, translation, **kwargs):
-    transformation = vreg.utils.affine_matrix(translation=translation)
-    return affine_transform(input_data, input_affine, transformation, reshape=True, **kwargs)
-
-def rotate(input_data, input_affine, output_shape, output_affine, rotation, **kwargs):
-    transformation = vreg.utils.affine_matrix(rotation=rotation)
-    return affine_transform_and_reslice(input_data, input_affine, output_shape, output_affine, transformation, **kwargs)
-
-def rotate_reshape(input_data, input_affine, rotation, **kwargs):
-    transformation = vreg.utils.affine_matrix(rotation=rotation)
-    return affine_transform(input_data, input_affine, transformation, reshape=True, **kwargs)
-
-def stretch(input_data, input_affine, output_shape, output_affine, stretch, **kwargs):
-    transformation = vreg.utils.affine_matrix(pixel_spacing=stretch)
-    return affine_transform_and_reslice(input_data, input_affine, output_shape, output_affine, transformation, **kwargs)
-
-def stretch_reshape(input_data, input_affine, stretch, **kwargs):
-    transformation = vreg.utils.affine_matrix(pixel_spacing=stretch)
-    return affine_transform(input_data, input_affine, transformation, reshape=True, **kwargs)
-
-def rotate_around(input_data, input_affine, output_shape, output_affine, parameters, **kwargs):
-    transformation = vreg.utils.affine_matrix(rotation=parameters[:3], center=parameters[3:])
-    return affine_transform_and_reslice(input_data, input_affine, output_shape, output_affine, transformation, **kwargs)
-
-def rotate_around_com(input_data, input_affine, output_shape, output_affine, parameters, **kwargs):
-    input_data = vreg.utils.to_3d(input_data) # need for com - not the right place
-    input_com = vreg.utils.center_of_mass(input_data, input_affine) # can be precomputed
-    transformation = vreg.utils.affine_matrix(rotation=parameters, center=input_com)
-    return affine_transform_and_reslice(input_data, input_affine, output_shape, output_affine, transformation, **kwargs)
-
-def rotate_around_reshape(input_data, input_affine, rotation, center, **kwargs):
-    transformation = vreg.utils.affine_matrix(rotation=rotation, center=center)
-    return affine_transform(input_data, input_affine, transformation, reshape=True, **kwargs)
-
-def rigid(input_data, input_affine, output_shape, output_affine, parameters, **kwargs):
-    transformation = vreg.utils.affine_matrix(rotation=parameters[:3], translation=parameters[3:])
-    return affine_transform_and_reslice(input_data, input_affine, output_shape, output_affine, transformation, **kwargs)
-
-def rigid_around(input_data, input_affine, output_shape, output_affine, parameters, **kwargs):
-    transformation = vreg.utils.affine_matrix(rotation=parameters[:3], center=parameters[3:6], translation=parameters[6:])
-    return affine_transform_and_reslice(input_data, input_affine, output_shape, output_affine, transformation, **kwargs)
-
-def rigid_around_com(input_data, input_affine, output_shape, output_affine, parameters, **kwargs):
-    input_data = vreg.utils.to_3d(input_data) # need for com - not the right place
-    input_com = vreg.utils.center_of_mass(input_data, input_affine) # Can be precomputed once a generic precomputing step is built into align.
-    transformation = vreg.utils.affine_matrix(rotation=parameters[:3], center=parameters[3:]+input_com, translation=parameters[3:])
-    return affine_transform_and_reslice(input_data, input_affine, output_shape, output_affine, transformation, **kwargs)
-
-def rigid_reshape(input_data, input_affine, rotation, translation, **kwargs):
-    transformation = vreg.utils.affine_matrix(rotation=rotation, translation=translation)
-    return affine_transform(input_data, input_affine, transformation, reshape=True, **kwargs)
-
-def affine(input_data, input_affine, output_shape, output_affine, parameters, **kwargs):
-    transformation = vreg.utils.affine_matrix(rotation=parameters[:3], translation=parameters[3:6], pixel_spacing=parameters[6:])
-    return affine_transform_and_reslice(input_data, input_affine, output_shape, output_affine, transformation, **kwargs)
-
-def affine_reshape(input_data, input_affine, rotation, translation, stretch, **kwargs):
-    transformation = vreg.utils.affine_matrix(rotation=rotation, translation=translation, pixel_spacing=stretch)
-    return affine_transform(input_data, input_affine, transformation, reshape=True, **kwargs)
-
-
-
-
-def transform_slice_by_slice(input_data, input_affine, output_shape, output_affine, parameters, transformation=translate, slice_thickness=None):
-    
-    # Note this does not work for center of mass rotation because weight array has different center of mass.
-    nz = input_data.shape[2]
-    if slice_thickness is not None:
-        if not isinstance(slice_thickness, list):
-            slice_thickness = [slice_thickness]*nz
-
-    weight = np.zeros(output_shape)
-    coregistered = np.zeros(output_shape)
-    input_ones_z = np.ones(input_data.shape[:2])
-    for z in range(nz):
-        input_data_z, input_affine_z = vreg.utils.extract_slice(input_data, input_affine, z, slice_thickness)
-        weight_z = transformation(input_ones_z, input_affine_z, output_shape, output_affine, parameters[z])
-        coregistered_z = transformation(input_data_z, input_affine_z, output_shape, output_affine, parameters[z])
-        weight += weight_z
-        coregistered += weight_z*coregistered_z
-
-    # Average each pixel value over all slices that have sampled it
-    nozero = np.where(weight > 0)
-    coregistered[nozero] = coregistered[nozero]/weight[nozero]
-    return coregistered
-
 def passive_inslice_translation_slice_by_slice(input_affine, parameters, slice_thickness=None):
     output_affine = []
     for z, pz in enumerate(parameters):
@@ -258,6 +176,12 @@ def passive_rigid_transform_slice_by_slice(input_affine, parameters, slice_thick
         output_affine.append(transformed_input_affine)
     return output_affine
 
+def passive_ortho_translation(input_affine, translation):
+    translation = vreg.utils.ortho_translation(input_affine, translation)
+    transform = vreg.utils.affine_matrix(translation=translation)
+    output_affine = transform.dot(input_affine)
+    return output_affine
+
 def passive_inslice_translation(input_affine, parameters):
     translation = vreg.utils.inslice_translation(input_affine, parameters)
     transform = vreg.utils.affine_matrix(translation=translation)
@@ -272,4 +196,14 @@ def passive_translation(input_affine, parameters):
 def passive_rigid_transform(input_affine, parameters):
     rigid_transform = vreg.utils.affine_matrix(rotation=parameters[:3], translation=parameters[3:])
     output_affine = rigid_transform.dot(input_affine)
+    return output_affine
+
+def passive_ortho_com_rigid(input_affine, input_com, parameters):
+    translation = vreg.utils.ortho_translation(input_affine, parameters[3:])
+    transform = vreg.utils.affine_matrix(
+        rotation=parameters[:3], 
+        center=translation+input_com, 
+        translation=translation,
+    )
+    output_affine = transform.dot(input_affine)
     return output_affine

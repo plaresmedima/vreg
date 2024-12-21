@@ -24,3 +24,12 @@ from vreg.mod_affine import *
 
 from vreg import utils
 from vreg.utils import *
+
+from vreg import transforms
+from vreg.transforms import *
+
+from vreg import volume
+from vreg.volume import *
+
+# from vreg import scipy_least_squares
+# from vreg.scipy_least_squares import *

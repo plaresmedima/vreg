@@ -1,9 +1,73 @@
 import numpy as np
 import pyvista as pv
 import scipy.ndimage as ndi
+import matplotlib.pyplot as plt
 
 import vreg.utils
 import vreg.mod_affine
+
+
+def plot_overlay_2d(under:np.ndarray | list, over:np.ndarray | list, 
+                    alpha=0.25, title=None, off_screen=False):
+
+    if isinstance(under, np.ndarray):
+        if under.ndim==2:
+            fig, ax = plt.subplots()
+            fig.suptitle(title)
+            _plot_overlay_2d(ax, under, over, alpha)
+        else:
+            plot_overlay_2d(
+                [under[:,:,z] for z in range(under.shape[-1])], 
+                [over[:,:,z] for z in range(over.shape[-1])],
+                alpha, title, off_screen,
+            )
+        plt.show()
+    elif isinstance(under, list):
+        n = len(under)
+        ny = np.ceil(np.sqrt(n)).astype(int)
+        nx = np.ceil(n/ny).astype(int)
+        fig, ax = plt.subplots(nx, ny, figsize=(ny*3, nx*3+0.5))
+        fig.suptitle(title)
+        plt.subplots_adjust(wspace=0, hspace=0, left=0, right=1, top=0.90, 
+                            bottom=0)
+        k=0
+        for i in range(nx):
+            for j in range(ny):
+                if k < n:
+                    _plot_overlay_2d(ax[i,j], under[k], over[k], alpha)
+                else:
+                    ax[i,j].axis('off')
+                    #ax[i,j].set_xticks([])  
+                    #ax[i,j].set_yticks([]) 
+                k+=1
+        plt.show()
+    else:
+        raise ValueError('Arguments must be either lists or arrays.')
+
+
+
+def _plot_overlay_2d(ax, under, over, alpha=0.25):
+
+    # Show the first image
+    ax.imshow(under.T, cmap='gray', alpha=1.0)  # Adjust alpha for transparency
+
+    # Create a mask for image2 where values are non-zero
+    mask = over > 0
+
+    # Show the second image only where the mask is True, with full opacity for non-zero values
+    # Use np.where to set the alpha values based on the mask
+    alpha_im = np.zeros_like(over)  # Create an alpha channel for image2
+    alpha_im[mask] = alpha  # Set alpha to 1 for non-zero values
+
+    # Display image2 with the mask applied
+    # Using 'jet' colormap for image2, but only where mask is True
+    ax.imshow(over.T, cmap='jet', alpha=alpha_im.T)  # Non-zero values will be opaque
+
+    # Optional: Add a colorbar
+    #plt.colorbar(ax.imshow(image2, cmap='jet', alpha=0.5), ax=ax)
+
+    ax.set_xticks([])  
+    ax.set_yticks([]) 
 
 
 def pv_contour(values, data, affine, surface=False):

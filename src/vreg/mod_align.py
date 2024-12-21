@@ -6,23 +6,22 @@ import vreg.utils
 import vreg.plot
 import vreg.mod_freeform
 import vreg.mod_affine
+import vreg.transforms
+
+from vreg import transforms
 
 
 # default metrics
 # ---------------
 
-def interaction(static, transformed, nan=None):
-    # static is here a mask image.
-    if nan is not None:
-        i = np.where(transformed != nan)
-        msk, img = static[i], transformed[i]
+
+def cov_mask(static, transformed, nan=None):
+    # transformed is here a mask image.
+    if nan is None:
+        masked = static[transformed > 0.01]
     else:
-        msk, img = static, transformed
-    return np.std(img[np.where(msk>0.5)])
-    return 1/np.mean(np.abs(msk*img))
-    return np.exp(-np.mean(np.abs(msk*img)))
-    i = img[np.where(msk>0.5)]
-    return np.exp(-np.mean(i**2))
+        masked = static[(transformed > 0.01) & (transformed != nan)]
+    return np.std(masked)/np.mean(masked)
 
 
 def sum_of_squares(static, transformed, nan=None):
@@ -54,14 +53,63 @@ def mutual_information(static, transformed, nan=None):
     return -np.sum(pxy[nzs] * np.log(pxy[nzs] / px_py[nzs]))
 
 
+def mi_grad(static, transformed, nan=None):
+    gstatic = np.gradient(np.squeeze(static))
+    gtransf = np.gradient(np.squeeze(transformed))
+    gstatic = np.linalg.norm(np.stack(gstatic), axis=0)
+    gtransf = np.linalg.norm(np.stack(gtransf), axis=0)
+    # support = np.squeeze(static) > 1e-2
+    # gstatic = gstatic[support]
+    # gtransf = gtransf[support]
+    # gstatic /= np.linalg.norm(gstatic)
+    # gtransf /= np.linalg.norm(gtransf)
+    return mutual_information(gstatic, gtransf, nan=nan)
+
+def sos_grad(static, transformed, nan=None):
+    gstatic = np.gradient(np.squeeze(static))
+    gtransf = np.gradient(np.squeeze(transformed))
+    gstatic = np.linalg.norm(np.stack(gstatic), axis=0)
+    gtransf = np.linalg.norm(np.stack(gtransf), axis=0)
+    gstatic /= np.linalg.norm(gstatic)
+    gtransf /= np.linalg.norm(gtransf)
+    return sum_of_squares(gstatic, gtransf, nan=nan)
 
 
-
-def goodness_of_alignment(params, transformation, metric, moving, moving_affine, static, static_affine, coord, moving_mask, static_mask_ind):
+def goodness_of_alignment_passive(
+        params, transformation, metric, moving, moving_affine, static, 
+        static_affine, coord, moving_mask, static_mask_ind):
 
     # Transform the moving image
     nan = 2**16-2 #np.nan does not work
-    transformed = transformation(moving, moving_affine, static.shape, static_affine, params, output_coordinates=coord, cval=nan)
+    static_transformed = transformation(moving.shape, moving_affine, static, static_affine, params)
+    
+    # If a moving mask is provided, this needs to be transformed in the same way
+    if moving_mask is None:
+        moving_mask_ind = None
+    else:
+        moving_mask_ind = np.where(moving_mask >= 0.5)
+
+    # Calculate matric in indices exposed by the mask(s)
+    if static_mask_ind is None and moving_mask_ind is None:
+        return metric(static_transformed, moving, nan=nan)
+    if static_mask_ind is None and moving_mask_ind is not None:
+        return metric(static_transformed[moving_mask_ind], moving[moving_mask_ind], nan=nan)
+    if static_mask_ind is not None and moving_mask_ind is None:
+        return metric(static_transformed[static_mask_ind], moving[static_mask_ind], nan=nan)
+    if static_mask_ind is not None and moving_mask_ind is not None:
+        ind = static_mask_ind or moving_mask_ind
+        return metric(static_transformed[ind], moving[ind], nan=nan)
+
+
+def goodness_of_alignment(
+        params, transformation, metric, moving, moving_affine, static, 
+        static_affine, coord, moving_mask, static_mask_ind):
+
+    # Transform the moving image
+    nan = 2**16-2 #np.nan does not work
+    moving_transformed = transformation(
+        moving, moving_affine, static.shape, static_affine, params, 
+        output_coordinates=coord, cval=nan)
     
     # If a moving mask is provided, this needs to be transformed in the same way
     if moving_mask is None:
@@ -72,14 +120,14 @@ def goodness_of_alignment(params, transformation, metric, moving, moving_affine,
 
     # Calculate matric in indices exposed by the mask(s)
     if static_mask_ind is None and moving_mask_ind is None:
-        return metric(static, transformed, nan=nan)
+        return metric(static, moving_transformed, nan=nan)
     if static_mask_ind is None and moving_mask_ind is not None:
-        return metric(static[moving_mask_ind], transformed[moving_mask_ind], nan=nan)
+        return metric(static[moving_mask_ind], moving_transformed[moving_mask_ind], nan=nan)
     if static_mask_ind is not None and moving_mask_ind is None:
-        return metric(static[static_mask_ind], transformed[static_mask_ind], nan=nan)
+        return metric(static[static_mask_ind], moving_transformed[static_mask_ind], nan=nan)
     if static_mask_ind is not None and moving_mask_ind is not None:
         ind = static_mask_ind or moving_mask_ind
-        return metric(static[ind], transformed[ind], nan=nan)
+        return metric(static[ind], moving_transformed[ind], nan=nan)
     
 
 
@@ -127,8 +175,8 @@ def align(
         parameters = None, 
         moving_affine = None, 
         static_affine = None, 
-        transformation = vreg.mod_affine.translate,
-        metric = sum_of_squares,
+        transformation = vreg.transforms.translate,
+        metric = mutual_information,
         optimize = 'LS',
         options = {},
         resolutions = [1], 
@@ -188,7 +236,7 @@ def align(
 
     # Perform multi-resolution loop
     for res in resolutions:
-        print('DOWNSAMPLE BY FACTOR: ', res)
+        #print('DOWNSAMPLE BY FACTOR: ', res)
 
         if res == 1:
             moving_resampled, moving_resampled_affine = moving, moving_affine
@@ -221,7 +269,11 @@ def align(
         # prec = precompute(moving_resampled, moving_resampled_affine, static_resampled, static_resampled_affine)
         # args = (transformation, metric, moving_resampled, moving_resampled_affine, static_resampled, static_resampled_affine, coord, prec)
         args = (transformation, metric, moving_resampled, moving_resampled_affine, static_resampled, static_resampled_affine, coord, moving_mask_resampled, static_mask_resampled_ind)
-        parameters = vreg.optimize.minimize(goodness_of_alignment, parameters, args=args, method=optimize, **options)
+        if transforms.is_passive(transformation):
+            goa = goodness_of_alignment_passive
+        else:
+            goa = goodness_of_alignment
+        parameters = vreg.optimize.minimize(goa, parameters, args=args, method=optimize, **options)
 
     return parameters
 
@@ -232,7 +284,7 @@ def align_slice_by_slice(
         parameters = None, 
         moving_affine = None, 
         static_affine = None, 
-        transformation = vreg.mod_affine.translate,
+        transformation = vreg.transforms.translate,
         metric = sum_of_squares,
         optimization = {'method':'GD', 'options':{}},
         resolutions = [1],
@@ -260,11 +312,11 @@ def align_slice_by_slice(
             progress(z, nz)
         
         # Get the slice and its affine
-        moving_z, moving_affine_z = vreg.mod_affine.extract_slice(moving, moving_affine, z, slice_thickness)
+        moving_z, moving_affine_z = vreg.utils.extract_slice(moving, moving_affine, z, slice_thickness)
         if moving_mask is None:
             moving_mask_z, moving_mask_affine_z = None, None
         else:
-            moving_mask_z, moving_mask_affine_z = vreg.mod_affine.extract_slice(moving_mask, moving_mask_affine, z, slice_thickness)
+            moving_mask_z, moving_mask_affine_z = vreg.utils.extract_slice(moving_mask, moving_mask_affine, z, slice_thickness)
 
         # Align volumes
         try:

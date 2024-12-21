@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:13.790** total execution time for 24 files **from generated\examples**:
+**00:00.106** total execution time for 28 files **from generated\examples**:
 
 .. container::
 
@@ -32,8 +32,14 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_generated_examples_plot_freeform.py` (``plot_freeform.py``)
-     - 00:13.790
+   * - :ref:`sphx_glr_generated_examples_plot_3d_multislice_translation_t2.py` (``plot_3d_multislice_translation_t2.py``)
+     - 00:00.106
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_3d_mask_translation.py` (``plot_3d_mask_translation.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_3d_multislice_translation.py` (``plot_3d_multislice_translation.py``)
+     - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_generated_examples_plot_affine.py` (``plot_affine.py``)
      - 00:00.000
@@ -69,6 +75,12 @@ Computation times
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_generated_examples_plot_bounding_box.py` (``plot_bounding_box.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_freeform.py` (``plot_freeform.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_generated_examples_plot_inslice_translation.py` (``plot_inslice_translation.py``)
      - 00:00.000
      - 0.0
    * - :ref:`sphx_glr_generated_examples_plot_rigid.py` (``plot_rigid.py``)

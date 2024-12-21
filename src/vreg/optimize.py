@@ -1,6 +1,7 @@
 import numpy as np
-import scipy.optimize
-
+import scipy.optimize#
+from tqdm import tqdm
+from vreg.scipy_least_squares import least_squares
 
 
 
@@ -11,10 +12,12 @@ def minimize(goodness_of_alignment, parameters, args=(), method='LS', **kwargs):
         return minimize_gd(goodness_of_alignment, parameters, args=args, **kwargs)
     elif method=='brute':
         return minimize_brute(goodness_of_alignment, args=args, **kwargs)
+    elif method=='brute-LS':
+        return minimize_brute_ls(goodness_of_alignment, args=args, **kwargs)
     elif method=='ibrute':
         return minimize_iterative_brute(goodness_of_alignment, args=args, **kwargs)
     elif method=='LS':
-        res = scipy.optimize.least_squares(goodness_of_alignment, parameters, args=args, **kwargs)
+        res = least_squares(goodness_of_alignment, parameters, args=args, **kwargs)
         return res.x
     elif method == 'min':
         res = scipy.optimize.minimize(goodness_of_alignment, parameters, args=args, **kwargs)
@@ -24,12 +27,18 @@ def minimize(goodness_of_alignment, parameters, args=(), method='LS', **kwargs):
             "Optimization method " + str(method) + " is not recognized."
             "The options are 'GD', 'brute', 'ibrute', 'LS' or 'min'.")
 
+def minimize_brute_ls(cost_function, args=None, grid=None, **kwargs):
+    params = minimize_brute(cost_function, args=args, grid=grid)
+    res = least_squares(cost_function, params, args=args, **kwargs)
+    return res.x
 
-def minimize_brute(cost_function, args=None, grid=None):
+    
+def minimize_brute(cost_function, args=None, grid=None, 
+                   desc='Performing brute-force optimization', progress=True):
     #grid = [[start, stop, num], [start, stop, num], ...]
     x = [np.linspace(p[0], p[1], p[2]) for p in grid]
     x = np.meshgrid(*tuple(x), indexing='ij')
-    for i in range(x[0].size):
+    for i in tqdm(range(x[0].size), desc=desc, disable=not progress):
         parameters = np.array([xp.ravel()[i] for xp in x])
         cost = cost_function(parameters, *args)
         if i==0:
