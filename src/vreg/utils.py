@@ -32,16 +32,6 @@ def volume_coordinates(shape, position=[0,0,0]):
 
 
 def fill_gaps(data, loc, mask=None):
-    """Fill gaps in data by interpolation
-
-    Args:
-        data (_type_): _description_
-        loc (_type_): _description_
-        mask (_type_, optional): _description_. Defaults to None.
-
-    Returns:
-        _type_: _description_
-    """
     # Fill gaps in data by interpolation
     # data is an array with values
     # loc is a mask array defining where to interpolate (0=interpolate, 1=value)
@@ -76,17 +66,10 @@ def rotation_displacement(rotation, center):
     return center_rot-center
 
 
-def center_of_mass(volume, affine):
-    """Return the center of mass in absolute coordinates"""
-
-    center_of_mass = ndi.center_of_mass(volume)
-    nd = volume.ndim
-    matrix = affine[:nd,:nd]
-    offset = affine[:nd, nd]
-    return np.dot(matrix, center_of_mass) + offset
 
 
-def envelope(d, affine):
+
+def envelope(d, affine, decimals=None):
 
     corners, _ = parallellepid(np.array(d), affine)
 
@@ -97,9 +80,16 @@ def envelope(d, affine):
     z0 = np.amin(corners[:,2])
     z1 = np.amax(corners[:,2])
 
-    nx = np.ceil(x1-x0).astype(np.int16)
-    ny = np.ceil(y1-y0).astype(np.int16)
-    nz = np.ceil(z1-z0).astype(np.int16)
+    dx = x1-x0
+    dy = y1-y0
+    dz = z1-z0
+    if decimals is not None:
+        dx = np.round(dx, decimals)
+        dy = np.round(dy, decimals)
+        dz = np.round(dz, decimals)
+    nx = np.ceil(dx).astype(np.int16)
+    ny = np.ceil(dy).astype(np.int16)
+    nz = np.ceil(dz).astype(np.int16)
 
     output_shape = (nx, ny, nz)
     output_pos = [x0, y0, z0]
@@ -156,7 +146,7 @@ def affine_output_geometry(input_shape, input_affine, transformation):
     # Determine output shape and position
     affine_transformed = transformation.dot(input_affine)
     forward = np.linalg.inv(input_affine).dot(affine_transformed) # Ai T A
-    output_shape, output_pos = envelope(input_shape, forward)
+    output_shape, output_pos = envelope(input_shape, forward, decimals=6)
 
     # Determine output affine by shifting affine to the output position
     nd = input_affine.shape[0]-1
@@ -196,28 +186,138 @@ def extract_slice(array, affine, z, slice_thickness=None):
     affine_z = affine_slice(affine, z, slice_thickness=slice_thickness)
     return array_z, affine_z
 
-def ortho_translation(affine, translation):
-    row_cosine = affine[:3,0]/np.linalg.norm(affine[:3,0])
-    column_cosine = affine[:3,1]/np.linalg.norm(affine[:3,1])
-    slice_cosine = np.cross(row_cosine, column_cosine)
-    return translation[0]*row_cosine + translation[1]*column_cosine + translation[2]*slice_cosine
+def center_of_mass(volume, affine, coords='fixed'):
 
-def inslice_translation(affine, translation):
+    com = ndi.center_of_mass(volume)
+    if isinstance(coords, str):
+        if coords == 'volume':
+            return com
+        if coords == 'fixed':
+            return vol2fix(com, affine)
+    else:
+        return vol2vol(com, affine, coords)
+
+    # nd = volume.ndim
+    # matrix = affine[:nd,:nd]
+    # offset = affine[:nd, nd]
+    # return np.dot(matrix, com) + offset
+
+def vol2vol(vec, affine_in, affine_out):
+    affine = np.linalg.inv(affine_out).dot(affine_in)
+    matrix = affine[:3,:3]
+    offset = affine[:3, 3]
+    return np.dot(matrix, vec) + offset
+    # vec = vol2fix(vec, affine_in)
+    # vec = fix2vol(vec, affine_out)
+    # return vec
+
+def vol2fix(vec, affine):
+    matrix = affine[:3,:3]
+    offset = affine[:3, 3]
+    return np.dot(matrix, vec) + offset
+
+def fix2vol(vec, affine):
+    affine = np.linalg.inv(affine)
+    matrix = affine[:3,:3]
+    offset = affine[:3, 3]
+    return np.dot(matrix, vec) + offset
+
+def volume_vector(vec, affine):
     row_cosine = affine[:3,0]/np.linalg.norm(affine[:3,0])
     column_cosine = affine[:3,1]/np.linalg.norm(affine[:3,1])
-    return translation[0]*row_cosine + translation[1]*column_cosine
+    slice_cosine = affine[:3,2]/np.linalg.norm(affine[:3,2])
+    # Replaced as incorrect for stretched volume?
+    # slice_cosine = np.cross(row_cosine, column_cosine)
+    return vec[0]*row_cosine + vec[1]*column_cosine + vec[2]*slice_cosine
+
+def inslice_vector(vec, affine):
+    row_cosine = affine[:3,0]/np.linalg.norm(affine[:3,0])
+    column_cosine = affine[:3,1]/np.linalg.norm(affine[:3,1])
+    return vec[0]*row_cosine + vec[1]*column_cosine
+
+def through_slice_vector(vec, affine):
+    # Replaced as incorrect for stretched volume?
+    # row_cosine = affine[:3,0]/np.linalg.norm(affine[:3,0])
+    # column_cosine = affine[:3,1]/np.linalg.norm(affine[:3,1])
+    # slice_cosine = np.cross(row_cosine, column_cosine)
+    slice_cosine = affine[:3,2]/np.linalg.norm(affine[:3,2])
+    if np.isscalar(vec):
+        return vec*slice_cosine
+    else:
+        return vec[0]*slice_cosine
 
 
 def to_3d(array):
     # Ensures that the data are 3D
-    # Find out where is the right place to do this
+    # Obsolete as Volume3D enforces 3D
     if array.ndim == 2: 
         return np.expand_dims(array, axis=-1)
     else:
         return array
     
 
+def make_affine(orient='axial', rotation=None, center=None, spacing=1.0, 
+                pos=[0,0,0]):
+
+    # Check data types
+    if orient not in ['axial','coronal','sagittal', 'xy', 'yz', 'zx']:
+        raise ValueError(
+            str(orient) + " is not a valid orientation. Possible "
+            "orientations are 'axial', 'coronal' and 'sagittal', "
+            "or also 'xy', 'yz' and 'zx'. ")
+
+    if rotation is not None:
+        rotation = np.array(rotation)
+        if rotation.size != 3:
+            raise ValueError("rotation must be a 3-element array.")
+        
+    if center is not None:
+        center = np.array(center)
+        if center.size != 3:
+            raise ValueError("center must be a 3-element array.")
+        
+    if np.isscalar(spacing):
+        spacing = 3*[spacing]
+    spacing = np.array(spacing)
+    if spacing.size != 3:
+        raise ValueError("spacing must be a 3-element array.")
+    
+    # Set up default orientation
+    if orient in ['axial', 'xy']:
+        affine = np.array([[1, 0, 0, 0],
+                           [0, 1, 0, 0],
+                           [0, 0, 1, 0],
+                           [0, 0, 0, 1]], dtype=np.float32)
+    elif orient in ['sagittal', 'yz']:
+        affine = np.array([[ 0, 0, 1, 0],
+                           [-1, 0, 0, 0],
+                           [ 0,-1, 0, 0],
+                           [ 0, 0, 0, 1]], dtype=np.float32)
+    elif orient in ['coronal', 'zx']:
+        affine = np.array([[1, 0, 0, 0],
+                           [0, 0, 1, 0],
+                           [0,-1, 0, 0],
+                           [0, 0, 0, 1]], dtype=np.float32)
+        
+    # Add spacing
+    for i in [0,1,2]:
+        affine[:,i] *= spacing[i]
+
+    # Rotate default orientation
+    if rotation is not None:  
+        transfo = affine_matrix(rotation=rotation, center=center) 
+        affine = transfo.dot(affine)
+  
+    # Shift
+    affine[:3,3] = np.array(pos)
+
+    return affine
+    
+
 def affine_matrix(rotation=None, translation=None, pixel_spacing=None, center=None):
+
+    if np.isscalar(pixel_spacing):
+        pixel_spacing = 3*[pixel_spacing]
 
     nd = 3
     matrix = np.eye(1+nd)

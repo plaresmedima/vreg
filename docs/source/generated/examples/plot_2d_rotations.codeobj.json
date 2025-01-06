@@ -1,0 +1,221 @@
+{
+ "center": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "coords": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "img": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "img.affine": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.affine"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.affine"
+  }
+ ],
+ "img.extract_slice": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.extract_slice"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.extract_slice"
+  }
+ ],
+ "img.reslice": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.reslice"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.reslice"
+  }
+ ],
+ "img.rotate": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.rotate"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.rotate"
+  }
+ ],
+ "mask": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "mask.center_of_mass": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.center_of_mass"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.center_of_mass"
+  }
+ ],
+ "np.array": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "array"
+  }
+ ],
+ "np.radians": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ufunc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "radians"
+  }
+ ],
+ "plt.overlay_2d": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.plot",
+   "module_short": "vreg.plot",
+   "name": "overlay_2d"
+  }
+ ],
+ "rot": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "vec": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "vreg.fetch": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "fetch"
+  }
+ ]
+}

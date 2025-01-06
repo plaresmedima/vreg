@@ -1,6 +1,6 @@
 import sys
 import pickle
-from vreg import volume
+from vreg import vol
 
 # filepaths need to be identified with importlib_resources
 # rather than __file__ as the latter does not work at runtime
@@ -15,14 +15,14 @@ else:
     import importlib.resources as importlib_resources
 
 
-def fetch(dataset: str) -> volume.Volume:
+def fetch(dataset: str) -> vol.Volume3D:
     """Fetch a dataset included in vreg
 
     Args:
         dataset (str): name of the dataset. See below for options.
 
     Returns:
-        Volume: Data as a vreg.Volume.
+        Volume3D: Data as a vreg.Volume3D.
 
     Notes:
 
@@ -49,6 +49,6 @@ def fetch(dataset: str) -> volume.Volume:
     datafile = str(f.joinpath(dataset + '.pkl'))
 
     with open(datafile, 'rb') as fp:
-        vol = pickle.load(fp)
+        v = pickle.load(fp)
 
-    return vol
+    return v

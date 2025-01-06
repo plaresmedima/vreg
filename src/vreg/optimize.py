@@ -1,9 +1,35 @@
 import numpy as np
-import scipy.optimize#
+import scipy.optimize
 from tqdm import tqdm
+# import dask
+# from dask.diagnostics import ProgressBar
+
 from vreg.scipy_least_squares import least_squares
 
+# @dask.delayed
+# def _compute_cost(cost_function, x, i, *args):
+#     parameters = np.array([xp.ravel()[i] for xp in x])
+#     return cost_function(parameters, *args)
 
+# @dask.delayed
+# def _opt_params(x, cost):
+#     i = np.argmin(cost)
+#     return np.array([xp.ravel()[i] for xp in x])
+
+# def _minimize_brute(cost_function, args=None, grid=None, 
+#                    desc='Performing brute-force optimization', progress=True):
+#     x = [np.linspace(p[0], p[1], p[2]) for p in grid]
+#     x = np.meshgrid(*tuple(x), indexing='ij')
+#     cost = []
+#     for i in range(x[0].size):
+#     #for i in tqdm(range(x[0].size), desc=desc, disable=not progress):
+#         ci = _compute_cost(cost_function, x, i, *args)
+#         cost.append(ci)
+#     opt = _opt_params(x, cost)
+#     #with ProgressBar():
+#         #opt = opt.compute(scheduler='single-threaded')
+#     opt = opt.compute(scheduler='single-threaded')
+#     return opt
 
 def minimize(goodness_of_alignment, parameters, args=(), method='LS', **kwargs):
     "General minimization function including scipy and custom methods"
@@ -32,9 +58,8 @@ def minimize_brute_ls(cost_function, args=None, grid=None, **kwargs):
     res = least_squares(cost_function, params, args=args, **kwargs)
     return res.x
 
-    
 def minimize_brute(cost_function, args=None, grid=None, 
-                   desc='Performing brute-force optimization', progress=True):
+                   desc='Performing brute-force optimization', progress=False):
     #grid = [[start, stop, num], [start, stop, num], ...]
     x = [np.linspace(p[0], p[1], p[2]) for p in grid]
     x = np.meshgrid(*tuple(x), indexing='ij')

@@ -18,23 +18,29 @@
 .. _sphx_glr_generated_examples_plot_3d_mask_translation.py:
 
 
-===================================
-3D translation: 3D image to 3D mask
-===================================
+=============================
+3D translation: image to mask
+=============================
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-9
+This example illustrates coregistration by 3D translation. The moving volume 
+is a 3D magnetization transfer map and the static volume is a 3D mask covering 
+both kidneys. 
+
+Coregistration is performed by brute force optimization using a mutual 
+information metric. 
+
+.. GENERATED FROM PYTHON SOURCE LINES 15-17
 
 Setup
+-----
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-16
+.. GENERATED FROM PYTHON SOURCE LINES 17-21
 
 .. code-block:: Python
 
+    import numpy as np
     import vreg
-
-
-    # Set this to False to show the results
-    OFF_SCREEN = True
+    import vreg.plot as plt
 
 
 
@@ -43,46 +49,97 @@ Setup
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 17-18
+.. GENERATED FROM PYTHON SOURCE LINES 22-24
 
 Get data
+--------
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-23
-
-.. code-block:: Python
-
-
-    #mask = vreg.fetch('left_kidney')
-    mask = vreg.fetch('right_kidney')
-    slab = vreg.fetch('MTR')
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 24-25
-
-Reslice mask to the MTR image
-
-.. GENERATED FROM PYTHON SOURCE LINES 25-31
+.. GENERATED FROM PYTHON SOURCE LINES 24-35
 
 .. code-block:: Python
 
 
-    mask_slab, _ = vreg.affine_reslice(mask[0], mask[1], slab[1], 
-                                    output_shape=slab[0].shape)
-    vreg.plot_overlay_2d(slab[0], mask_slab, title='Original data', 
-                         off_screen=OFF_SCREEN)
+    # Static oblique volumes
+    lk = vreg.fetch('left_kidney')
+    rk = vreg.fetch('right_kidney')
+
+    # Moving volume
+    mtr = vreg.fetch('MTR')
+
+    # Geometrical reference
+    dixon = vreg.fetch('Dixon_water')
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 36-40
+
+Format data
+-----------
+Create a mask containing both kidneys (bk) with the geometry of the 
+complete DIXON series
+
+.. GENERATED FROM PYTHON SOURCE LINES 40-43
+
+.. code-block:: Python
+
+
+    bk = lk.slice_like(dixon).add(rk)
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 44-48
+
+Bounding box
+------------
+Extract a bounding box to reduce the size of the volume. This is not 
+necessary but it speeds up the calculation a little as the volume is smaller.
+
+.. GENERATED FROM PYTHON SOURCE LINES 48-51
+
+.. code-block:: Python
+
+
+    bk = bk.bounding_box() 
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 52-56
+
+Overlay data before registration
+--------------------------------
+If we overlay the mask on the volume, we clearly see the misalignment due to 
+different breath holding positions:
+
+.. GENERATED FROM PYTHON SOURCE LINES 56-62
+
+.. code-block:: Python
+
+
+    plt.overlay_2d(mtr, bk, title='Before 3D translation', 
+                   vmin=np.percentile(mtr.values, 10),
+                   vmax=np.percentile(mtr.values, 99))
+
 
 
 
 
 .. image-sg:: /generated/examples/images/sphx_glr_plot_3d_mask_translation_001.png
-   :alt: Original data
+   :alt: Before 3D translation
    :srcset: /generated/examples/images/sphx_glr_plot_3d_mask_translation_001.png
    :class: sphx-glr-single-img
 
@@ -90,32 +147,55 @@ Reslice mask to the MTR image
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-33
+.. GENERATED FROM PYTHON SOURCE LINES 63-70
 
-3D translation in slice coords
+Coregister
+----------
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-54
+We are coregistering using a 3D translation in the reference frame of the 
+moving volume. We are using a brute force optimization which is slow but 
+robust. We allow for translations between [-20, 20] mm in-slice, and 
+[-5, 5] mm through-slice, in steps of 2mm.
+
+.. GENERATED FROM PYTHON SOURCE LINES 70-83
 
 .. code-block:: Python
 
 
-    grid = (
-        [-20, 20, 20],
-        [-20, 20, 20],
-        [-5, 5, 5],
-    ) 
-    translation = vreg.align(
-        moving=mask[0], moving_affine=mask[1],
-        static=slab[0], static_affine=slab[1],
-        transformation=vreg.translate_passive_ortho,
-        metric=vreg.mutual_information,
-        optimize='brute', options={'grid':grid},
-    ) 
-    # Apply the translation that we found
-    mask_slab = vreg.translate_passive_ortho(mask[0], mask[1], slab[0].shape, 
-                                             slab[1], translation) 
-    # Plot the result
-    vreg.plot_overlay_2d(slab[0], mask_slab, title='3D translation')
+    optimizer = {
+        'method': 'brute',
+        'grid': (
+            [-20, 20, 20],
+            [-20, 20, 20],
+            [-5, 5, 5],
+        ),
+    }
+    params = mtr.find_translate_to(bk, optimizer=optimizer, coords='volume')
+    mtr = mtr.translate(params, coords='volume')
+
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 84-88
+
+Overlay data after registration
+-------------------------------
+If we overlay the mask on the new volume, we can see that the misalignment 
+is significantly reduced:
+
+.. GENERATED FROM PYTHON SOURCE LINES 88-95
+
+.. code-block:: Python
+
+
+    plt.overlay_2d(mtr, bk, title='After 3D translation', 
+                   vmin=np.percentile(mtr.values, 10),
+                   vmax=np.percentile(mtr.values, 99))
 
 
 
@@ -123,16 +203,10 @@ Reslice mask to the MTR image
 
 
 .. image-sg:: /generated/examples/images/sphx_glr_plot_3d_mask_translation_002.png
-   :alt: 3D translation
+   :alt: After 3D translation
    :srcset: /generated/examples/images/sphx_glr_plot_3d_mask_translation_002.png
    :class: sphx-glr-single-img
 
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    DOWNSAMPLE BY FACTOR:  1
 
 
 
@@ -140,7 +214,7 @@ Reslice mask to the MTR image
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (9 minutes 47.882 seconds)
+   **Total running time of the script:** (4 minutes 10.542 seconds)
 
 
 .. _sphx_glr_download_generated_examples_plot_3d_mask_translation.py:

@@ -18,229 +18,275 @@
 .. _sphx_glr_generated_examples_plot_3d_multislice_translation_t2.py:
 
 
-==============================================
-3D translation: multislice 2D image to 3D mask
-==============================================
+=====================================
+Multislice 2D to 3D translation (T2*)
+=====================================
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-9
+This example illustrates 2D to 3D coregistration using 3D translations
+
+The moving volume is an oblique multi-slice T2* map and the static volume is 
+a 3D coronal mask covering both kidneys. 
+
+An initial 3D translation is performed using both kidneys as a static target. 
+In a second step, fine tuning is done for each kidney separately.
+
+Coregistration is performed by brute force optimization using a 
+mutual information metric.
+
+.. GENERATED FROM PYTHON SOURCE LINES 19-21
 
 Setup
+-----
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-17
+.. GENERATED FROM PYTHON SOURCE LINES 21-38
 
 .. code-block:: Python
 
+
+    # Import packages
     import vreg
-    from tqdm import tqdm
+    import vreg.plot as plt
 
 
-    # Set this to False to show the results
-    OFF_SCREEN = True
-
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 18-19
-
-Get data
-
-.. GENERATED FROM PYTHON SOURCE LINES 19-30
-
-.. code-block:: Python
-
-
-    dixon = vreg.Volume(*vreg.fetch('Dixon_water'))
+    # Get static volumes
     lk = vreg.fetch('left_kidney')
     rk = vreg.fetch('right_kidney')
-    lk = vreg.affine_reslice(lk[0], lk[1], dixon[1], output_shape=dixon[0].shape)
-    rk = vreg.affine_reslice(rk[0], rk[1], dixon[1], output_shape=dixon[0].shape)
-    mask = (lk[0]+rk[0], dixon[1])
-    dixon = vreg.mask_volume(dixon[0], dixon[1], mask[0], mask[1], 20)
+
+    # get moving volumes
     multislice = vreg.fetch('T2star')
-    #multislice = vreg.fetch('T1')
 
-
-
-.. rst-class:: sphx-glr-script-out
-
-.. code-block:: pytb
-
-    Traceback (most recent call last):
-      File "C:\Users\steve\Dropbox\Software\vreg\docs\examples\plot_3d_multislice_translation_t2.py", line 23, in <module>
-        lk = vreg.affine_reslice(lk[0], lk[1], dixon[1], output_shape=dixon[0].shape)
-    TypeError: 'Volume' object is not subscriptable
+    # Get geometrical reference
+    dixon = vreg.fetch('Dixon_water')
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-32
-
-Reslice left kidney ROI to the T1-map (slice 0)
-
-.. GENERATED FROM PYTHON SOURCE LINES 32-48
-
-.. code-block:: Python
-
-
-    mask_slices = [
-        vreg.affine_reslice(
-            mask[0], mask[1], oneslice[1], output_shape=oneslice[0].shape,
-        ) for oneslice in multislice
-    ]
-    vreg.plot_overlay_2d(
-        [v[0] for v in multislice], 
-        [v[0] for v in mask_slices],
-        title='Original data',
-        off_screen=OFF_SCREEN,
-    )
-
-    exit()
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-50
 
-3D translation in slice coords
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-81
+.. GENERATED FROM PYTHON SOURCE LINES 39-43
+
+Format data
+-----------
+Create a mask containing both kidneys (bk) with the geometry of the 
+complete DIXON series
+
+.. GENERATED FROM PYTHON SOURCE LINES 43-46
 
 .. code-block:: Python
 
 
-    grid = (
-        [-20, 20, 20],
-        [-20, 20, 20],
-        [-5, 5, 5],
-    ) 
-    translation = [
-        vreg.align(
-            moving=mask[0], moving_affine=mask[1],
-            #moving=dixon[0], moving_affine=dixon[1],
-            static=oneslice[0], static_affine=oneslice[1],
-            transformation=vreg.translate_passive_ortho,
-            metric=vreg.mutual_information,
-            optimize='brute', 
-            options={
-                'grid':grid, 
-                'desc':'Translating ' + str(z) + ' out of ' + str(len(multislice))
-            },
-        ) for z, oneslice in enumerate(multislice)
-    ]
-    # Apply the translation that we found
-    mask_slices = [
-        vreg.translate_passive_ortho(mask[0], mask[1], oneslice[0].shape, 
-                                     oneslice[1], translation[z]) 
-        for z, oneslice in enumerate(multislice)
-    ]
-    # Plot the result
-    vreg.plot_overlay_2d([v[0] for v in multislice], mask_slices, 
-                         title='3D translation')
+    bk = lk.slice_like(dixon).add(rk)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-83
 
-Fine tune left kidney with a rigid transformation
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-133
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 47-49
+
+Extract bounding boxes to reduce the size of the volume. This is not 
+necessary but it speeds up the calculation a little as the volume is smaller.
+
+.. GENERATED FROM PYTHON SOURCE LINES 49-54
 
 .. code-block:: Python
 
 
-    grids = [
-        (
-            [-0.2, 0.2, 4],
-            [-0.2, 0.2, 4],
-            [-0.2, 0.2, 4],
-            [t[0]-2, t[0]+2, 4],
-            [t[1]-2, t[1]+2, 4],
-            [t[2]-2, t[2]+2, 4],
-        ) 
-    for t in translation]
-
-    # bounds = [
-    #     (
-    #         [g[0] for g in grid],
-    #         [g[1] for g in grid],
-    #     )
-    # for grid in grids]
-
-    # Find the transformation
-    params = [
-        vreg.align(
-            moving=lk[0], moving_affine=lk[1],
-            #moving=dixon[0], moving_affine=dixon[1],
-            static=oneslice[0], static_affine=oneslice[1],
-            transformation=vreg.rigid_passive_com_ortho,
-            metric=vreg.mutual_information,
-            # optimize='LS',
-            # parameters=[0]*3 + list(translation[z]),
-            # options={
-            #     'bounds': bounds[z],
-            #     'abs_step': [0.01]*3+[0.1]*3,
-            # },
-            optimize='brute', 
-            options={
-                'grid':grids[z],
-                'desc':'Transforming ' + str(z) + ' out of ' + str(len(multislice))
-            },
-        ) for z, oneslice in tqdm(enumerate(multislice), desc='Left kidney alignment')
-    ]
-    # Apply the transformation to the mask
-    mask_slices = [
-        vreg.rigid_passive_com_ortho(lk[0], lk[1], oneslice[0].shape, 
-                                     oneslice[1], params[z]) 
-        for z, oneslice in enumerate(multislice)
-    ]
-    # Plot the result
-    vreg.plot_overlay_2d([v[0] for v in multislice], mask_slices, 
-                         title='3D rigid')
+    bk = bk.bounding_box()
+    lk = lk.bounding_box()
+    rk = rk.bounding_box()
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-135
 
-Fine tune right kidney with a rigid transformation
 
-.. GENERATED FROM PYTHON SOURCE LINES 135-169
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 55-57
+
+If we overlay the mask on the volume, we clearly see the misalignment due to 
+different breath holding positions:
+
+.. GENERATED FROM PYTHON SOURCE LINES 57-60
 
 .. code-block:: Python
 
 
-    # Find the transformation
-    params = [
-        vreg.align(
-            moving=rk[0], moving_affine=rk[1],
-            #moving=dixon[0], moving_affine=dixon[1],
-            static=oneslice[0], static_affine=oneslice[1],
-            transformation=vreg.rigid_passive_com_ortho,
-            metric=vreg.mutual_information,
-            # parameters=[0]*3 + list(translation[z]),
-            # optimize='LS',
-            # options={
-            #     'bounds': bounds[z],
-            #     'abs_step': [0.01]*3+[0.1]*3,
-            # },
-            optimize='brute', 
-            options={
-                'grid':grids[z],
-                'desc':'Transforming ' + str(z) + ' out of ' + str(len(multislice))
-            },
-        ) for z, oneslice in tqdm(enumerate(multislice), desc='Right kidney alignment')
-    ]
-    # Apply the transformation to the mask
-    mask_slices = [
-        vreg.rigid_passive_com_ortho(rk[0], rk[1], oneslice[0].shape, 
-                                     oneslice[1], params[z]) 
-        for z, oneslice in enumerate(multislice)
-    ]
-    # Plot the result
-    vreg.plot_overlay_2d([v[0] for v in multislice], mask_slices, 
-                         title='3D rigid')
+    plt.overlay_2d(multislice, bk)
+
+
+
+
+.. image-sg:: /generated/examples/images/sphx_glr_plot_3d_multislice_translation_t2_001.png
+   :alt: plot 3d multislice translation t2
+   :srcset: /generated/examples/images/sphx_glr_plot_3d_multislice_translation_t2_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 61-67
+
+Coregister to both kidneys
+--------------------------
+In a first step we coregister by 3D translation to both kidneys. Since the 
+moving data are multislice, we need to perform a coregistration for each 
+slice separately. We perform brute force optimization allowing translations 
+between [-20, 20] mm in-slice, and [-5, 5] mm through-slice, in steps of 2mm:
+
+.. GENERATED FROM PYTHON SOURCE LINES 67-87
+
+.. code-block:: Python
+
+
+    # Optimizer settings
+    optimizer = {
+        'method': 'brute',
+        'grid': (
+            [-20, 20, 20],
+            [-20, 20, 20],
+            [-5, 5, 5],
+        ), 
+    }
+    # Translations are defined in volume coordinates
+    options = {
+        'coords':'volume', 
+    }
+    # Perform the coregistration for each slice 
+    for z, sz in enumerate(multislice):
+        tz = sz.find_translate_to(bk, optimizer=optimizer, **options)  
+        multislice[z] = sz.translate(tz, **options)
+
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 88-90
+
+If we overlay the mask on the new volume, we can see that the misalignment 
+is significantly reduced but some imperfections still remain.
+
+.. GENERATED FROM PYTHON SOURCE LINES 90-93
+
+.. code-block:: Python
+
+
+    plt.overlay_2d(multislice, bk)
+
+
+
+
+.. image-sg:: /generated/examples/images/sphx_glr_plot_3d_multislice_translation_t2_002.png
+   :alt: plot 3d multislice translation t2
+   :srcset: /generated/examples/images/sphx_glr_plot_3d_multislice_translation_t2_002.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 94-98
+
+Left kidney fine tuning
+-----------------------
+We now perform a rigid transformation to the left kidney to fine tune the 
+alignment.
+
+.. GENERATED FROM PYTHON SOURCE LINES 98-108
+
+.. code-block:: Python
+
+
+    # Try 10 translations between +/- 2mm in each directon
+    optimizer['grid'] = 3*[[-2, 2, 10]]
+
+    # Perform the fine tuning
+    align_lk = []
+    for z, sz in enumerate(multislice):
+        tz = sz.find_translate_to(lk, optimizer=optimizer, **options) 
+        align_lk.append(sz.translate(tz, **options))
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 109-110
+
+Plot the result
+
+.. GENERATED FROM PYTHON SOURCE LINES 110-112
+
+.. code-block:: Python
+
+    plt.overlay_2d(align_lk, lk,  title='Left kidney alignment')
+
+
+
+
+.. image-sg:: /generated/examples/images/sphx_glr_plot_3d_multislice_translation_t2_003.png
+   :alt: Left kidney alignment
+   :srcset: /generated/examples/images/sphx_glr_plot_3d_multislice_translation_t2_003.png
+   :class: sphx-glr-single-img
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 113-116
+
+Right kidney fine tuning
+------------------------
+Repeat the same steps for the right kidney
+
+.. GENERATED FROM PYTHON SOURCE LINES 116-122
+
+.. code-block:: Python
+
+
+    align_rk = []
+    for z, sz in enumerate(multislice):
+        tz = sz.find_translate_to(rk, optimizer=optimizer, **options)
+        align_rk.append(sz.translate(tz, **options))
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 123-124
+
+Plot the result
+
+.. GENERATED FROM PYTHON SOURCE LINES 124-126
+
+.. code-block:: Python
+
+    plt.overlay_2d(align_rk, rk,  title='Right kidney alignment')
+
+
+
+
+.. image-sg:: /generated/examples/images/sphx_glr_plot_3d_multislice_translation_t2_004.png
+   :alt: Right kidney alignment
+   :srcset: /generated/examples/images/sphx_glr_plot_3d_multislice_translation_t2_004.png
+   :class: sphx-glr-single-img
+
 
 
 
@@ -248,7 +294,7 @@ Fine tune right kidney with a rigid transformation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.106 seconds)
+   **Total running time of the script:** (22 minutes 39.181 seconds)
 
 
 .. _sphx_glr_download_generated_examples_plot_3d_multislice_translation_t2.py:

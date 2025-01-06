@@ -1,8 +1,8 @@
 .. _volume:
 
-*************************
-The vreg.Volume data type
-*************************
+********
+Volume3D
+********
 
 .. currentmodule:: vreg
 
@@ -13,7 +13,7 @@ The vreg.Volume data type
    :template: class.rst
    :recursive:
 
-   Volume
-   zeros
+   Volume3D
+
 
 

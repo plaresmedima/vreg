@@ -10,10 +10,9 @@ Utilities
 
 .. autosummary::
    :toctree: ../generated/api/
-   :template: custom-class-template.rst
+   :template: autosummary.rst
    :recursive:
 
    fetch
-   fill_gaps
 
 

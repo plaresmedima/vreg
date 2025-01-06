@@ -1,0 +1,178 @@
+{
+ "axial": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "axial.reslice": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.reslice"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.reslice"
+  }
+ ],
+ "cor": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "cor.reslice": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.reslice"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.reslice"
+  }
+ ],
+ "mask": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "np.radians": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ufunc"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "radians"
+  }
+ ],
+ "obl": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "plt.overlay_2d": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.plot",
+   "module_short": "vreg.plot",
+   "name": "overlay_2d"
+  }
+ ],
+ "sagit": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "sagit.reslice": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.reslice"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.reslice"
+  }
+ ],
+ "vreg.fetch": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "fetch"
+  }
+ ]
+}

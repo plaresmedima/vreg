@@ -1,21 +1,18 @@
 ﻿vreg.fetch
 ==========
 
+
 .. currentmodule:: vreg
 
-.. autoclass:: fetch
-   :members:                                                    
-   :inherited-members: 
-
-   
-   
-   
 
 
-   
-   
-   
+.. autofunction:: fetch
+
+
+
 
 
 .. minigallery:: vreg.fetch
    :add-heading:
+
+

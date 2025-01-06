@@ -1,33 +1,18 @@
-﻿vreg.Volume
+﻿vreg.volume
 ===========
+
 
 .. currentmodule:: vreg
 
-.. autoclass:: Volume
 
-   
 
-   
-   .. rubric:: Methods
+.. autofunction:: volume
 
-   .. autosummary::
-      :toctree: Volume
-   
-      ~Volume.add
-      ~Volume.copy
-      ~Volume.slice_like
-   
-   
 
-   
-   
-   .. rubric:: Attributes
 
-   .. autosummary::
-      :toctree: Volume
-   
-      ~Volume.affine
-      ~Volume.shape
-      ~Volume.values
-   
-   
+
+
+.. minigallery:: vreg.volume
+   :add-heading:
+
+

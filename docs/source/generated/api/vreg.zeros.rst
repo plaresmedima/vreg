@@ -1,15 +1,18 @@
 ﻿vreg.zeros
 ==========
 
+
 .. currentmodule:: vreg
 
-.. autoclass:: zeros
 
-   
 
-   
-   
+.. autofunction:: zeros
 
-   
-   
-   
+
+
+
+
+.. minigallery:: vreg.zeros
+   :add-heading:
+
+

@@ -4,16 +4,15 @@
 Plot
 ****
 
-.. currentmodule:: vreg
+.. currentmodule:: vreg.plot
 
 
 
 .. autosummary::
    :toctree: ../generated/api/
-   :template: custom-class-template.rst
+   :template: autosummary.rst
    :recursive:
 
-   plot_volume
-   plot_affine_transform_reslice
+   overlay_2d
 
 

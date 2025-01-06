@@ -1,14 +1,174 @@
 {
- "OFF_SCREEN": [
+ "bk": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "bk.bounding_box": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.bounding_box"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.bounding_box"
+  }
+ ],
+ "dixon": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "lk": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "lk.slice_like": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.slice_like"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.slice_like"
+  }
+ ],
+ "mtr": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "mtr.find_translate_to": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.find_translate_to"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.find_translate_to"
+  }
+ ],
+ "mtr.translate": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.translate"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.translate"
+  }
+ ],
+ "mtr.values": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.values"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.values"
+  }
+ ],
+ "np.percentile": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "_ArrayFunctionDispatcher"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "percentile"
+  }
+ ],
+ "optimizer": [
   {
    "is_class": false,
    "is_explicit": false,
    "module": "builtins",
    "module_short": "builtins",
-   "name": "bool"
+   "name": "dict"
   }
  ],
- "_": [
+ "params": [
   {
    "is_class": false,
    "is_explicit": false,
@@ -17,52 +177,7 @@
    "name": "ndarray"
   }
  ],
- "grid": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "tuple"
-  }
- ],
- "mask": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "tuple"
-  }
- ],
- "mask_slab": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "numpy",
-   "module_short": "numpy",
-   "name": "ndarray"
-  }
- ],
- "slab": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "tuple"
-  }
- ],
- "translation": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "numpy",
-   "module_short": "numpy",
-   "name": "ndarray"
-  }
- ],
- "vreg.affine_reslice": [
+ "plt.overlay_2d": [
   {
    "is_class": false,
    "is_explicit": false,
@@ -73,25 +188,25 @@
   {
    "is_class": false,
    "is_explicit": false,
-   "module": "vreg",
-   "module_short": "vreg",
-   "name": "affine_reslice"
+   "module": "vreg.plot",
+   "module_short": "vreg.plot",
+   "name": "overlay_2d"
   }
  ],
- "vreg.align": [
+ "rk": [
   {
    "is_class": false,
    "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
   },
   {
    "is_class": false,
    "is_explicit": false,
    "module": "vreg",
    "module_short": "vreg",
-   "name": "align"
+   "name": "Volume3D"
   }
  ],
  "vreg.fetch": [
@@ -108,54 +223,6 @@
    "module": "vreg",
    "module_short": "vreg",
    "name": "fetch"
-  }
- ],
- "vreg.mutual_information": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
-  },
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "vreg",
-   "module_short": "vreg",
-   "name": "mutual_information"
-  }
- ],
- "vreg.plot_overlay_2d": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
-  },
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "vreg",
-   "module_short": "vreg",
-   "name": "plot_overlay_2d"
-  }
- ],
- "vreg.translate_passive_ortho": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
-  },
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "vreg",
-   "module_short": "vreg",
-   "name": "translate_passive_ortho"
   }
  ]
 }
