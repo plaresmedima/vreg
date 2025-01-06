@@ -1,2 +1,1 @@
 include src/vreg/datafiles/*.pkl
-include src/vreg/datafiles/*.csv

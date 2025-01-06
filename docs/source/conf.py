@@ -1,3 +1,5 @@
+from pathlib import Path
+
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -8,7 +10,7 @@
 project = 'vreg'
 copyright = '2024, vreg maintainers'
 author = 'vreg maintainers'
-release = '0.0.0'
+release = '0.0.1'
 
 # -- Path setup --------------------------------------------------------------
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -17,6 +19,13 @@ release = '0.0.0'
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../../src'))
+
+# -- pyvista configuration ---------------------------------------------------
+import pyvista
+
+# necessary when building the sphinx gallery
+pyvista.BUILDING_GALLERY = True
+os.environ['PYVISTA_BUILDING_GALLERY'] = 'true'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -35,14 +44,24 @@ extensions = [
     'sphinx_design', # sphinx web design components
     #'sphinx_remove_toctrees', # selectively remove toctree objects from pages
     'sphinx_gallery.gen_gallery', # thumbnail galleries
-    'matplotlib.sphinxext.plot_directive', # to show plots in docstrings
     'sphinx_exec_code', # To execute code in rst files.
+
+    # Cannot be used together with pyvista plot directive at the moment
+    # Use pyvista to show matplotlib plots in docstrings
+    # https://github.com/pyvista/pyvista/discussions/5951
+    # 'matplotlib.sphinxext.plot_directive', # to show plots in docstrings
+
+    #generate static and interactive scenes of pyvista plots
+    "pyvista.ext.plot_directive",
+    "pyvista.ext.viewer_directive",
 ]
 
 
 
 # Settings for sphinx-gallery, see
 # https://sphinx-gallery.github.io/stable/getting_started.html#create-simple-gallery
+
+
 sphinx_gallery_conf = {
     # path to the example scripts relative to conf.py
     'examples_dirs': '../examples',   
@@ -68,6 +87,9 @@ sphinx_gallery_conf = {
 
     # Default setting disables animations. Set to True to enable
     'matplotlib_animations': (True, 'jshtml'),
+
+    # Image scrapers are plugins that allow Sphinx-Gallery to detect images
+    'image_scrapers': ('pyvista', 'matplotlib'),
 }
 
 # This way a link to other methods, classes, or modules can be made with back ticks so that you don't have to use qualifiers like :class:, :func:, :meth: and the likes

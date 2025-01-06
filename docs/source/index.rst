@@ -2,20 +2,15 @@
 **vreg** documentation
 #######################
 
-Coregistration of image volumes
-
-.. note::
-
-   ``vreg`` is under construction. At this stage, the API may still change and 
-   features may be deprecated without warning.
+3D arrays with spatial awareness
 
 
 ***
 Aim
 ***
 
-Toolbox for coregistration of 3D image slabs with different orientations and 
-positions in space.
+Facilitate alignment and slicing of 3D datasets with different positions and 
+orientations.
 
 *******
 License

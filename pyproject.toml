@@ -6,14 +6,14 @@ requires = ['setuptools>=61.2']
 
 [project]
 name = "vreg"
-version = "0.0.0"
+version = "0.0.1"
 dependencies = [
   'importlib-resources>=1.1.0',
   'tqdm',
   'numpy<=1.26.4',
   'scipy',
-  'scikit-image',
-  'pyvista',
+  'scikit-image', # remove - currently only used to generate ellipsoid in fake
+
 ]
 # optional information
 description = "Coregistration of image volumes"
@@ -51,6 +51,12 @@ requires-python = ">=3.6" # arbitrary - relax this?
 [project.urls]
 "Homepage" = "https://qib-sheffield.github.io/vreg/"
 "Source Code" = "https://github.com/QIB-Sheffield/vreg"
+
+[project.optional-dependencies]
+plot = [
+  'pyvista',
+  'matplotlib',
+]
 
 [tool.setuptools]
 # ...

@@ -17,5 +17,8 @@ what they are and what they do.
 .. toctree::
    :maxdepth: 2
 
-   main
+   volume
+   creation
+   plot
+   utils
    

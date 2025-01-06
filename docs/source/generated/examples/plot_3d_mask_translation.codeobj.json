@@ -1,0 +1,228 @@
+{
+ "bk": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "bk.bounding_box": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.bounding_box"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.bounding_box"
+  }
+ ],
+ "dixon": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "lk": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "lk.slice_like": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.slice_like"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.slice_like"
+  }
+ ],
+ "mtr": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "mtr.find_translate_to": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.find_translate_to"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.find_translate_to"
+  }
+ ],
+ "mtr.translate": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.translate"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.translate"
+  }
+ ],
+ "mtr.values": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.values"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.values"
+  }
+ ],
+ "np.percentile": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "_ArrayFunctionDispatcher"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "percentile"
+  }
+ ],
+ "optimizer": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "dict"
+  }
+ ],
+ "params": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "plt.overlay_2d": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.plot",
+   "module_short": "vreg.plot",
+   "name": "overlay_2d"
+  }
+ ],
+ "rk": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "vreg.fetch": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "fetch"
+  }
+ ]
+}

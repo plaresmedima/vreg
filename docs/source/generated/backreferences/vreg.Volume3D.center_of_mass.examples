@@ -1,0 +1,42 @@
+
+
+Examples using ``vreg.Volume3D.center_of_mass``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+.. start-sphx-glr-thumbnails
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example illustrates some of the basic ideas underlying affine  transformations using in-slice rotations.">
+
+.. only:: html
+
+  .. image:: /generated/examples/images/thumb/sphx_glr_plot_2d_rotations_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_generated_examples_plot_2d_rotations.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">In-slice rotations</div>
+    </div>
+
+
+.. only:: not html
+
+ * :ref:`sphx_glr_generated_examples_plot_2d_rotations.py`
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+

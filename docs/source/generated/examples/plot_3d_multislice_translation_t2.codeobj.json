@@ -1,0 +1,291 @@
+{
+ "align_lk": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "align_lk.append": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  }
+ ],
+ "align_rk": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "align_rk.append": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  }
+ ],
+ "bk": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "bk.bounding_box": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.bounding_box"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.bounding_box"
+  }
+ ],
+ "dixon": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "lk": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "lk.bounding_box": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.bounding_box"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.bounding_box"
+  }
+ ],
+ "lk.slice_like": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.slice_like"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.slice_like"
+  }
+ ],
+ "multislice": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "list"
+  }
+ ],
+ "optimizer": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "dict"
+  }
+ ],
+ "options": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "dict"
+  }
+ ],
+ "plt.overlay_2d": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.plot",
+   "module_short": "vreg.plot",
+   "name": "overlay_2d"
+  }
+ ],
+ "rk": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "rk.bounding_box": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.bounding_box"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.bounding_box"
+  }
+ ],
+ "sz": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D"
+  }
+ ],
+ "sz.find_translate_to": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.find_translate_to"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.find_translate_to"
+  }
+ ],
+ "sz.translate": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg.vol",
+   "module_short": "vreg",
+   "name": "Volume3D.translate"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "Volume3D.translate"
+  }
+ ],
+ "tz": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "vreg.fetch": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "vreg",
+   "module_short": "vreg",
+   "name": "fetch"
+  }
+ ],
+ "z": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ]
+}
