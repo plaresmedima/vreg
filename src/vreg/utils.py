@@ -166,12 +166,12 @@ def multislice_to_singleslice_affine(affine_ms, slice_thickness):
     return affine_ss
 
 def affine_slice(affine, z, slice_thickness=None):
-
     # Get the slice and its affine
     affine_z = affine.copy()
     affine_z[:3,3] += z*affine[:3,2]
     # Set the slice spacing to equal the slice thickness.
     # Note: both are equal for 3D array but different for 2D multislice
+    # This caters for the convention in dbdicom and should become obsolete
     if slice_thickness is not None:
         slice_spacing = np.linalg.norm(affine[:3,2])
         if np.isscalar(slice_thickness):
