@@ -58,12 +58,16 @@ def minimize_brute_ls(cost_function, args=None, grid=None, **kwargs):
     res = least_squares(cost_function, params, args=args, **kwargs)
     return res.x
 
-def minimize_brute(cost_function, args=None, grid=None, 
-                   desc='Performing brute-force optimization', progress=False):
+def minimize_brute(
+        cost_function, args=None, grid=None, 
+        desc='Performing brute-force optimization', progress=False, 
+        callback=None):
     #grid = [[start, stop, num], [start, stop, num], ...]
     x = [np.linspace(p[0], p[1], p[2]) for p in grid]
     x = np.meshgrid(*tuple(x), indexing='ij')
     for i in tqdm(range(x[0].size), desc=desc, disable=not progress):
+        if callback is not None:
+            callback(100*(i+1)/x[0].size)
         parameters = np.array([xp.ravel()[i] for xp in x])
         cost = cost_function(parameters, *args)
         if i==0:
