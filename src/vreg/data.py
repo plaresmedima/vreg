@@ -1,5 +1,8 @@
+import os
 import sys
 import pickle
+import requests
+
 from vreg import vol
 
 # filepaths need to be identified with importlib_resources
@@ -48,7 +51,49 @@ def fetch(dataset: str) -> vol.Volume3D:
     f = importlib_resources.files('vreg.datafiles')
     datafile = str(f.joinpath(dataset + '.pkl'))
 
-    with open(datafile, 'rb') as fp:
-        v = pickle.load(fp)
+    # If this is the first time the data are accessed, download them.
+    if not os.path.exists(datafile):
+
+        # Dataset location
+        version_doi = "14630319" # This will change if a new version is created on zenodo
+        file_url = "https://zenodo.org/records/" + version_doi + "/files/" + dataset + ".pkl"
+
+        # Make the request and check for connection error
+        try:
+            file_response = requests.get(file_url) 
+        except requests.exceptions.ConnectionError as err:
+            raise requests.exceptions.ConnectionError(
+                "\n\n"
+                "A connection error occurred trying to download the test data \n"
+                "from Zenodo. This usually happens if you are offline. The \n"
+                "first time a dataset is fetched via vreg.fetch you need to \n"
+                "be online so the data can be downloaded. After the first \n"
+                "time they are saved locally so afterwards you can fetch \n"
+                "them even if you are offline. \n\n"
+                "The detailed error message is here: " + str(err)) 
+        
+        # Check for other errors
+        file_response.raise_for_status()
+
+        # Save the file locally 
+        with open(datafile, 'wb') as f:
+            f.write(file_response.content)
+
+    with open(datafile, 'rb') as f:
+        v = pickle.load(f)
 
     return v
+
+
+def clear_cache():
+    """
+    Clear the folder where the data downloaded via fetch are saved.
+
+    Note if you clear the cache the data will need to be downloaded again 
+    if you need them.
+    """
+
+    f = importlib_resources.files('vreg.datafiles')
+    for item in f.iterdir(): 
+        if item.is_file(): 
+            item.unlink() # Delete the file
