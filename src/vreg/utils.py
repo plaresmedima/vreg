@@ -2,9 +2,7 @@ import numpy as np
 import scipy.ndimage as ndi
 
 from scipy.spatial.transform import Rotation
-from scipy.interpolate import griddata
-
-
+from scipy.interpolate import griddata 
 
 def affine_resolution(shape, spacing):
     """Smallest detectable rotation, translation and stretching of a volume with given shape and resolution."""
@@ -64,9 +62,6 @@ def rotation_displacement(rotation, center):
     rot = Rotation.from_rotvec(rotation)
     center_rot = rot.apply(center)
     return center_rot-center
-
-
-
 
 
 def envelope(d, affine, decimals=None):

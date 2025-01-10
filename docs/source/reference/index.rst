@@ -19,6 +19,7 @@ what they are and what they do.
 
    volume
    creation
+   functions
    plot
    utils
    
