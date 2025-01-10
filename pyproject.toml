@@ -6,7 +6,7 @@ requires = ['setuptools>=61.2']
 
 [project]
 name = "vreg"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
   'importlib-resources>=1.1.0',
   'tqdm',
@@ -16,7 +16,7 @@ dependencies = [
 
 ]
 # optional information
-description = "Coregistration of image volumes"
+description = "3D arrays with spatial awareness"
 readme = "README.rst"
 authors = [
   { name = "Steven Sourbron", email = "s.sourbron@sheffield.ac.uk" },
