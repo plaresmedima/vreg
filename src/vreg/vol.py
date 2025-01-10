@@ -27,7 +27,10 @@ class Volume3D:
         if affine.shape != (4,4):
             raise ValueError('affine must be a 4x4 array.')
         
-        if values.ndim == 2:
+        # TODO: Not good because you can't be sure axis 2 is right
+        # This must be handled in volume() and Volume3D should always receive 
+        # a 3D array of values
+        if values.ndim == 2: 
             values = np.expand_dims(values, axis=2)
         
         self._values = values
@@ -44,6 +47,10 @@ class Volume3D:
     @property
     def shape(self):
         return self._values.shape
+    
+    @property
+    def spacing(self):
+        return np.linalg.norm(self.affine[:3,:3], axis=0)
     
     def copy(self, **kwargs):
         """Return a copy
@@ -71,13 +78,58 @@ class Volume3D:
         values, affine = utils.extract_slice(self.values, self.affine, z)
         return Volume3D(values.copy(), affine.copy())
 
+
+    def split(self, n=None, axis=-1, gap=0):
+        """Split a volume into slices (2D volumes)
+
+        Args:
+            n (int, optional): number of slices in the result. If this is not 
+              provided, n is the shape of the volume in the axis along which 
+              it is split. Defaults to None.
+            axis (int, optional): Axis along which to split the volume. 
+              Defaults to -1 (z-axis).
+            gap (float, optional): Add a gap (in mm) between the resulting 
+              slices. Defaults to 0.
+
+        Returns:
+            list of Volume3D: a list of volumes with a single slice each.
+        """
+        # If the number of slices required is different from the current 
+        # number of slices, then first resample the volume.
+        if n == self.shape[axis]:
+            vol = self
+        else:
+            spacing = self.spacing
+            spacing[axis] = spacing[axis]*self.shape[axis]/n
+            vol = self.resample(spacing) 
+
+        # Split up the volume into a list of 2D volumes.
+        mat = vol.affine[:3,:3]
+        split_vec = mat[:, axis] 
+        split_unit_vec = split_vec/self.spacing[axis]
+        vols = []
+        for i in range(vol.shape[axis]):
+            
+            # Shift the affine by i positions along the slice axis.
+            affine_i = vol.affine.copy()
+            affine_i[:3, 3] += i*split_vec + i*gap*split_unit_vec
+
+            # Take the i-th slice and add a dimension of 1 to make a 3D array.
+            values_i = vol.values.take(i, axis=axis)
+            values_i = np.expand_dims(values_i, axis=axis)
+
+            # Build the volume and add to the list.
+            vol_i = Volume3D(values_i, affine_i)
+            vols.append(vol_i)
+        return vols
+
     
     def add(self, v, *args, **kwargs):
         """Add another volume
 
         Args:
             v (Volume3D): volume to add. If this is in a different geometry, it 
-              will be resliced first
+                will be resliced first
             args, kwargs: arguments and keyword arguments of `numpy.add`.
 
         Returns:
@@ -92,7 +144,7 @@ class Volume3D:
 
         Args:
             v (Volume3D): volume to subtract. If this is in a different 
-              geometry, it will be resliced first
+                geometry, it will be resliced first
             args, kwargs: arguments and keyword arguments of `numpy.subtract`.
 
         Returns:
@@ -107,11 +159,11 @@ class Volume3D:
 
         Args:
             mask (Volume3D, optional): If mask is None, the bounding box is 
-              drawn around the non-zero values of the Volume3D. If mask is 
-              provided, it is drawn around the non-zero values of mask 
-              instead. Defaults to None.
+                drawn around the non-zero values of the Volume3D. If mask is 
+                provided, it is drawn around the non-zero values of mask 
+                instead. Defaults to None.
             margin (float, optional): How big a margin (in mm) around the 
-              object. Defaults to 0.
+                object. Defaults to 0.
 
         Returns:
             Volume3D: the bounding box
@@ -130,14 +182,14 @@ class Volume3D:
 
         Args:
             spacing (array-like, optional): New pixel spacing in mm. Generally 
-              this is a 3-element array but for isotropic resampling this can 
-              be a scalar value. If this is not provided, the volume is 
-              resampled according to the specified stretch. Defaults to None.
+                this is a 3-element array but for isotropic resampling this can 
+                be a scalar value. If this is not provided, the volume is 
+                resampled according to the specified stretch. Defaults to None.
             stretch (float, optional): Rescale pixel size with this value. 
-              Generally this is a 3-element array, one for each dimension. If 
-              a scalar value is provided, all dimensions are resampled with 
-              the same stretch factor. This argument is ignored if a spacing is 
-              provided explicitly. Defaults to None (no resampling).
+                Generally this is a 3-element array, one for each dimension. If 
+                a scalar value is provided, all dimensions are resampled with 
+                the same stretch factor. This argument is ignored if a spacing is 
+                provided explicitly. Defaults to None (no resampling).
 
         Raises:
             ValueError: if spacing or stretch have the wrong size.
@@ -1050,6 +1102,77 @@ def full_like(v:Volume3D, fill_value):
     """
     values = np.full_like(v.values, fill_value)
     return volume(values, v.affine.copy())
+
+
+def concatenate(vols, axis=2, prec=None, move=False):
+    """Join a sequence of volumes along x-, y-, or z-axis.
+
+    Volumes can only be joined up if they have the same shape 
+    (except along the axis of concatenation), the same orientation and 
+    the same voxel size.
+
+    Args:
+        vols (sequence of volumes): Volumes to concatenate.
+        axis (int, optional): The axis along which the volumes will be 
+          concatenated (x, y or z). Defaults to 2 (z-axis).
+        prec (int, optional): precision to consider when comparing positions 
+          and orientations of volumes. All differences are rounded off to this 
+          digit before comparing them to zero. If this is not specified, 
+          floating-point precision is used. Defaults to None.
+        move (bool, optional): If this is set to True, the volumes are allowed 
+          to move to the correct positions for concatenation. In this case 
+          the first volume in the sequence will be fixed, and all others will 
+          move to align with it. If move=False, volumes can only be 
+          concatenated if they are already aligned in the direction of 
+          concatenation without gaps between them, and in the correct order. 
+          Defaults to False.
+
+    Returns:
+        Volume3D: The concatenated volume.
+    """
+
+    # Check arguments
+    if not np.iterable(vols):
+        raise ValueError(
+            "vreg.stack() requires an iterable as argument.")
+    if axis not in [0,1,2,-1,-2,-3]:
+        raise ValueError(
+            "Invalid axis argument. Volumes only have 3 axes.")
+
+    # Check that all volumes have the same shape and orientation
+    if prec is None:
+        mat = [v.affine[:3,:3].tolist() for v in vols]  
+    else:
+        mat = [np.around(v.affine[:3,:3], prec).tolist() for v in vols]
+    mat = [x for i, x in enumerate(mat) if i==mat.index(x)]
+    if len(mat) > 1:
+        raise ValueError(
+            "Volumes with different orientations or voxel sizes cannot be "
+            "concatenated."
+        )
+    mat = vols[0].affine[:3,:3]
+
+    if not move:
+        # Check that all volumes are correctly aligned.
+        pos = [v.affine[:3,3] for v in vols]
+        concat_vec = mat[:,axis]
+        for i, v in enumerate(vols[:-1]):
+            pos_next = pos[i] + concat_vec*v.shape[axis]
+            dist = np.linalg.norm(pos[i+1]-pos_next)
+            if prec is not None:
+                dist = np.around(dist, prec)
+            if dist > 0:
+                raise ValueError(
+                    "Volumes cannot be concatenated. They are not aligned in "
+                    "the direction of concatenation. Set move=True if want to "
+                    "allow them to move to the correct position."
+                )
+        
+    # Determine concatenation and return new volume
+    affine = vols[0].affine
+    values = np.concatenate([v.values for v in vols], axis=axis)
+
+    return Volume3D(values, affine)  
 
 
 

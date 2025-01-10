@@ -8,9 +8,9 @@ from pathlib import Path
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 project = 'vreg'
-copyright = '2024, vreg maintainers'
+copyright = '2024-2025, vreg maintainers'
 author = 'vreg maintainers'
-release = '0.0.1'
+release = '0.0.2'
 
 # -- Path setup --------------------------------------------------------------
 # If extensions (or modules to document with autodoc) are in another directory,

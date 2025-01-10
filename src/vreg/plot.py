@@ -77,7 +77,7 @@ def overlay_2d(under:vol.Volume3D | list, over=None,
         _plot_2d(ax, uim, vmin=vmin, vmax=vmax)
     else:
         if isinstance(under, list):
-            over = [over.slice_like(under[k]) for k in range(under)]
+            over = [over.slice_like(u) for u in under]
         else:
             over = over.slice_like(under)
         oim = _mosaic(over)

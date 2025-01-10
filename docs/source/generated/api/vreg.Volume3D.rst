@@ -28,6 +28,7 @@
       ~Volume3D.rotate
       ~Volume3D.rotate_to
       ~Volume3D.slice_like
+      ~Volume3D.split
       ~Volume3D.stretch
       ~Volume3D.stretch_to
       ~Volume3D.subtract
@@ -51,6 +52,7 @@
    
       ~Volume3D.affine
       ~Volume3D.shape
+      ~Volume3D.spacing
       ~Volume3D.values
    
    
