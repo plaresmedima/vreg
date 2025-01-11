@@ -13,6 +13,7 @@ dependencies = [
   'numpy<=1.26.4',
   'scipy',
   'scikit-image', # remove - currently only used to generate ellipsoid in fake
+  'requests',
 
 ]
 # optional information
