@@ -112,6 +112,7 @@ Building release notes
 Creating a new release (from a fork)
 ------------------------------------
 
+= Clear cache with vreg.fetch(clear_cache=True) or manually
 = Enforce PEP8 (see above)
 - Run the test suite in a clean environment (see above) and check test 
   coverage (see above)

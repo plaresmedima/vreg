@@ -10,7 +10,7 @@ from pathlib import Path
 project = 'vreg'
 copyright = '2024-2025, vreg maintainers'
 author = 'vreg maintainers'
-release = '0.0.2'
+release = '0.0.3'
 
 # -- Path setup --------------------------------------------------------------
 # If extensions (or modules to document with autodoc) are in another directory,
