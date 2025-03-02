@@ -21,5 +21,6 @@ what they are and what they do.
    creation
    functions
    plot
+   rw
    utils
    

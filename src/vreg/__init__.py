@@ -31,6 +31,8 @@ from vreg.vol import *
 from vreg import data
 from vreg.data import *
 
+from vreg import rw
+from vreg.rw import *
 
 
 # from vreg import scipy_least_squares

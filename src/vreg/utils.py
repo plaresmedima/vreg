@@ -288,7 +288,12 @@ def make_affine(orient='axial', rotation=None, center=None, spacing=1.0,
                            [-1, 0, 0, 0],
                            [ 0,-1, 0, 0],
                            [ 0, 0, 0, 1]], dtype=np.float32)
-    elif orient in ['coronal', 'zx']:
+    elif orient == 'coronal':
+        affine = np.array([[1, 0, 0, 0],
+                           [0, 0,-1, 0],
+                           [0,-1, 0, 0],
+                           [0, 0, 0, 1]], dtype=np.float32)
+    elif orient == 'zx':
         affine = np.array([[1, 0, 0, 0],
                            [0, 0, 1, 0],
                            [0,-1, 0, 0],

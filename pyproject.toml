@@ -58,13 +58,20 @@ plot = [
   'pyvista',
   'matplotlib',
 ]
+rw = [
+    "nibabel",
+]
+complete = [
+  'pyvista',
+  'matplotlib', 
+  "nibabel", 
+]
 
 [tool.setuptools]
 # ...
 # By default, include-package-data is true in pyproject.toml, so you do
 # NOT have to specify this line.
 include-package-data = true
-
 
 [tool.setuptools.packages.find]
 where = ["src"]
