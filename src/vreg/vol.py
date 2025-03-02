@@ -21,20 +21,16 @@ class Volume3D:
         if not isinstance(affine, np.ndarray):
             raise ValueError('affine must be a numpy array.')
         
-        if values.ndim not in [2,3]:
-            raise ValueError('values must have 2 or 3 dimensions.')
+        if values.ndim < 3:
+            raise ValueError("values must have at least 3 dimensions.")
         
         if affine.shape != (4,4):
             raise ValueError('affine must be a 4x4 array.')
         
-        # TODO: Not good because you can't be sure axis 2 is right
-        # This must be handled in volume() and Volume3D should always receive 
-        # a 3D array of values
-        if values.ndim == 2: 
-            values = np.expand_dims(values, axis=2)
-        
         self._values = values
         self._affine = affine
+        # TODO include self._prec attribute rather than defining it in functions
+        # prec = intrinsic precision in physical units of locations and distances
     
     @property
     def values(self):
@@ -45,12 +41,28 @@ class Volume3D:
         return self._affine
     
     @property
+    def ndim(self):
+        return self._values.ndim
+    
+    @property
     def shape(self):
         return self._values.shape
     
     @property
     def spacing(self):
         return np.linalg.norm(self.affine[:3,:3], axis=0)
+    
+    @property
+    def row_dir(self):
+        return self.affine[:3,0]/np.linalg.norm(self.affine[:3,0])
+    
+    @property
+    def col_dir(self):
+        return self.affine[:3,1]/np.linalg.norm(self.affine[:3,1])
+    
+    @property
+    def slice_dir(self):
+        return self.affine[:3,2]/np.linalg.norm(self.affine[:3,2])
     
     def copy(self, **kwargs):
         """Return a copy
@@ -75,11 +87,54 @@ class Volume3D:
         Returns:
             vreg.Volume3D: one-slice Volume3D at index z
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         values, affine = utils.extract_slice(self.values, self.affine, z)
         return Volume3D(values.copy(), affine.copy())
 
 
-    def split(self, n=None, axis=-1, gap=0):
+    def separate(self, axis=None):
+        """Separate a volume along one or more time axes.
+
+        Args:
+            axis (int, optional): Time axis along which to separate. If this 
+              is not provided, the volume is separated along all time 
+              axes. Defaults to None.
+
+        Returns:
+            np.ndarray: array of 3D volumes. 
+        """
+
+        if axis in [0,1,2]:
+            raise ValueError("A volume cannot be separated along a space axis. "
+                             "Use split() instead.")  
+        if self.ndim==3:
+            raise ValueError("A 3D volume can not be separated. Perhaps "
+                              "you wanted to split()?")
+        if axis is not None:
+            vols = []
+            for i in range(self.shape[axis]):
+                # Take a slice along a time axis.
+                affine_i = self.affine.copy()
+                values_i = _take_view(self.values, i, axis)
+                # Build the volume and add to the list.
+                vol_i = Volume3D(values_i, affine_i) 
+                vols.append(vol_i)  
+            return np.asarray(vols) 
+        else:
+            axis = self.ndim-1
+            vols = self.separate(axis) # 1D
+            if axis > 3:
+                axis -= 1
+                shape = vols.shape
+                vols = [v.separate(axis) for v in vols.reshape(-1)]
+                newdim = vols[0].size
+                vols = np.array(vols).reshape(shape + (newdim,)) # 3D
+            return vols
+
+
+    def split(self, n=None, axis=2, gap=0)->list:
         """Split a volume into slices (2D volumes)
 
         Args:
@@ -94,6 +149,18 @@ class Volume3D:
         Returns:
             list of Volume3D: a list of volumes with a single slice each.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
+        if axis not in [0,1,2]:
+            raise ValueError("A volume cannot be split along a time axis. Use "
+                             "separate() instead.")           
+        
+        # Default
+        if n is None:
+            n = self.shape[axis]
+        if n==1:
+            return [self]
         # If the number of slices required is different from the current 
         # number of slices, then first resample the volume.
         if n == self.shape[axis]:
@@ -115,7 +182,8 @@ class Volume3D:
             affine_i[:3, 3] += i*split_vec + i*gap*split_unit_vec
 
             # Take the i-th slice and add a dimension of 1 to make a 3D array.
-            values_i = vol.values.take(i, axis=axis)
+            # values_i = vol.values.take(i, axis=axis)
+            values_i = _take_view(vol.values, i, axis)
             values_i = np.expand_dims(values_i, axis=axis)
 
             # Build the volume and add to the list.
@@ -135,6 +203,9 @@ class Volume3D:
         Returns:
             Volume3D: sum of the two volumes
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         v = v.slice_like(self)
         values = np.add(self.values, v.values, *args, **kwargs)
         return Volume3D(values, self.affine)
@@ -150,6 +221,9 @@ class Volume3D:
         Returns:
             Volume3D: sum of the two volumes
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         v = v.slice_like(self)
         values = np.subtract(self.values, v.values, *args, **kwargs)
         return Volume3D(values, self.affine)
@@ -168,6 +242,9 @@ class Volume3D:
         Returns:
             Volume3D: the bounding box
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         if mask is None:
             values, affine = mod_affine.mask_volume(
                 self.values, self.affine, self.values, self.affine, margin)
@@ -197,6 +274,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: resampled volume
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         # Set defaults
         if stretch is None:
             stretch = 1.0
@@ -261,6 +341,9 @@ class Volume3D:
         Returns:
             params: The optimal values for the transformaton parameters.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         # Defaults
         if metric is None:
             metric = 'mi'
@@ -327,6 +410,9 @@ class Volume3D:
         Returns:
             float: distance after transform
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         if metric == 'mi':
             metric = metrics.mutual_information
         elif metric == 'sos':
@@ -370,6 +456,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         return getattr(self, transform + '_to')(target, params, **kwargs)
     
     def transform(self, transform, params, **kwargs):
@@ -385,6 +474,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         return getattr(self, transform)(params, **kwargs)
 
 
@@ -426,6 +518,9 @@ class Volume3D:
         Returns:
             params: The optimal values for the transformaton parameters.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         return self.find_transform_to(
             target, 'transform_rigid', params=params, metric=metric, 
             optimizer=optimizer, resolutions=resolutions, 
@@ -468,6 +563,9 @@ class Volume3D:
         Returns:
             params: The optimal values for the transformaton parameters.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         return self.find_transform_to(
             target, 'rotate', params=rotation, metric=metric, 
             optimizer=optimizer, resolutions=resolutions, 
@@ -507,6 +605,9 @@ class Volume3D:
         Returns:
             params: The optimal values for the transformaton parameters.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         return self.find_transform_to(
             target, 'translate', params=translation, metric=metric, 
             optimizer=optimizer, resolutions=resolutions, 
@@ -585,7 +686,7 @@ class Volume3D:
             numpy.ndarray: 3-element vector pointing to the volume's center of 
             mass.
         """ 
-        return utils.center_of_mass(self.values, self.affine, coords=coords)
+        return utils.center_of_mass(self.values[:3], self.affine, coords=coords)
 
 
     def reslice(self, affine=None, orient=None, rotation=None, center=None, 
@@ -599,8 +700,12 @@ class Volume3D:
             orient (str, optional): Orientation of the volume. The options are 
               'axial', 'sagittal', or 'coronal'. Alternatively the same options 
               can be provided referring to the orientation of the image planes: 
-              'xy' (axial), 'yz' (sagittal) or 'zx' (coronal). If None is 
-              provided, the current orientation of the volume is used. 
+              'xy', 'yz' or 'zx'. If None is provided, the current 
+              orientation of the volume is used. **Note** while 'xy' and 'yz' 
+              mean exactly the same as 'axial' and 'sagittal', respectively, 
+              'zx' differs from coronal in the orientation of the z-axis. While 
+              'zx' forms a right-handed reference frame, 'coronal' is 
+              left-handed following the common convention in medical imaging.
               Defaults to None.
             rotation (array, optional): 3-element array specifying the rotation 
               relative to *orient*, or relative to the current orientation 
@@ -619,7 +724,9 @@ class Volume3D:
         Returns:
             Volume3D: resliced volume
         """
-
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         if affine is None:
             
             # Convert to fixed coordinates
@@ -664,6 +771,9 @@ class Volume3D:
         Returns:
             Volume3D: resliced volume
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         values, affine = mod_affine.affine_reslice(
             self.values, self.affine, 
             v.affine, output_shape=v.shape)
@@ -692,6 +802,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         translation = params[:3]
         rotation = params[3:6]
         stretch = params[6:9]
@@ -732,6 +845,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         stretch = np.ones(3)
         params = np.concatenate((params, stretch))
         return self.transform_affine_to(target, params, coords=coords, 
@@ -759,6 +875,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         translation = np.zeros(3)
         stretch = np.ones(3)
         params = np.concatenate((translation, rotation, stretch))
@@ -787,6 +906,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         if dir=='xy':
             translation = np.concatenate((translation, [0]))
         elif dir=='z':
@@ -809,6 +931,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         translation = np.zeros(3)
         rotation = np.zeros(3)
         params = np.concatenate((translation, rotation, stretch))
@@ -843,6 +968,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         translation = params[:3]
         rotation = params[3:6]
         stretch = params[6:9]
@@ -889,6 +1017,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         stretch = np.ones(3)
         params = np.concatenate((params, stretch))
         return self.transform_affine(params, center=center, values=values, 
@@ -921,6 +1052,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         translation = np.zeros(3)
         stretch = np.ones(3)
         params = np.concatenate((translation, rotation, stretch))
@@ -955,6 +1089,9 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         if dir=='xy':
             translation = np.concatenate((translation, [0]))
         elif dir=='z':
@@ -983,16 +1120,39 @@ class Volume3D:
         Returns:
             vreg.Volume3D: transformed volume.
         """
+        if self.ndim > 3:
+            raise ValueError("This function is not yet available for volumes "
+                             "with more than 3 dimensions")
         translation = np.zeros(3)
         rotation = np.zeros(3)
         params = np.concatenate((translation, rotation, stretch))
         return self.transform_affine(params, values=values, reshape=reshape)
 
 
+    def truncate(self, shape):
+        """Truncate the volume to a smaller shape.
+
+        Args:
+            shape (array-like): 3-element array with the new shape. Each 
+              dimension must be equal or smaller than the current shape.
+
+        Returns:
+            vreg.Volume3D: truncated volume.
+        """
+        if self.ndim > 3:
+            return Volume3D(
+                self.values[:shape[0], :shape[1], :shape[2], :],
+                self.affine)
+        return Volume3D(
+            self.values[:shape[0], :shape[1], :shape[2]],
+            self.affine)
+
+
+
 
         
-def volume(values, affine=None, orient='axial', rotation=None, center=None, 
-           spacing=1.0, pos=[0,0,0]):
+def volume(values:np.ndarray, affine:np.ndarray=None, orient='axial', 
+           rotation=None, center=None, spacing=1.0, pos=[0,0,0]):
     """Create a new volume from an array of values
 
     Args:
@@ -1003,7 +1163,11 @@ def volume(values, affine=None, orient='axial', rotation=None, center=None,
         orient (str, optional): Orientation of the volume. The options are 
           'axial', 'sagittal', or 'coronal'. Alternatively the same options 
           can be provided referring to the orientation of the image planes: 
-          'xy' (axial), 'yz' (sagittal) or 'zx' (coronal). Defaults to 'axial.
+          'xy', 'yz' or 'zx'. **Note** while 'xy' and 'yz' mean exactly the 
+          same as 'axial' and 'sagittal', respectively, 'zx' differs from 
+          coronal in the orientation of the z-axis. While 'zx' forms a 
+          right-handed reference frame, 'coronal' is left-handed following 
+          the common convention in medical imaging.Defaults to 'axial.
         rotation (array, optional): 3-element array specifying a rotation 
           relative to *orient*. Defaults to None.
         center (array, optional): 3-element array specifying the rotation 
@@ -1019,6 +1183,10 @@ def volume(values, affine=None, orient='axial', rotation=None, center=None,
 
     if affine is None:
         affine = utils.make_affine(orient, rotation, center, spacing, pos) 
+    if values.ndim==1:
+        values = np.expand_dims(values, -1)
+    if values.ndim==2:
+        values = np.expand_dims(values, -1)
     return Volume3D(values, affine)
 
 
@@ -1035,7 +1203,11 @@ def zeros(shape, affine=None, orient='axial', spacing=1.0, pos=[0,0,0],
         orient (str, optional): Orientation of the volume. The options are 
           'axial', 'sagittal', or 'coronal'. Alternatively the same options 
           can be provided referring to the orientation of the image planes: 
-          'xy' (axial), 'yz' (sagittal) or 'zx' (coronal). Defaults to 'axial'.
+          'xy', 'yz' or 'zx'. **Note** while 'xy' and 'yz' mean exactly the 
+          same as 'axial' and 'sagittal', respectively, 'zx' differs from 
+          coronal in the orientation of the z-axis. While 'zx' forms a 
+          right-handed reference frame, 'coronal' is left-handed following 
+          the common convention in medical imaging. Defaults to 'axial'.
         spacing (float, optional): Pixel spacing in mm. Can be a 3D array or 
           a single scalar for isotropic spacing. Defaults to 1.0.
         pos (list, optional): Position of the upper left-hand corner in mm. 
@@ -1062,7 +1234,11 @@ def full(shape, fill_value, affine=None, orient='axial', spacing=1.0,
         orient (str, optional): Orientation of the volume. The options are 
           'axial', 'sagittal', or 'coronal'. Alternatively the same options 
           can be provided referring to the orientation of the image planes: 
-          'xy' (axial), 'yz' (sagittal) or 'zx' (coronal). Defaults to 'axial'.
+          'xy', 'yz' or 'zx'. **Note** while 'xy' and 'yz' mean exactly the 
+          same as 'axial' and 'sagittal', respectively, 'zx' differs from 
+          coronal in the orientation of the z-axis. While 'zx' forms a 
+          right-handed reference frame, 'coronal' is left-handed following 
+          the common convention in medical imaging. Defaults to 'axial'.
         spacing (float, optional): Pixel spacing in mm. Can be a 3D array or 
           a single scalar for isotropic spacing. Defaults to 1.0.
         pos (list, optional): Position of the upper left-hand corner in mm. 
@@ -1130,12 +1306,14 @@ def concatenate(vols, axis=2, prec=None, move=False):
     Returns:
         Volume3D: The concatenated volume.
     """
-
+    if isinstance(vols, Volume3D):
+        return vols
+    
     # Check arguments
     if not np.iterable(vols):
         raise ValueError(
             "vreg.stack() requires an iterable as argument.")
-    if axis not in [0,1,2,-1,-2,-3]:
+    if axis not in [0,1,2]:
         raise ValueError(
             "Invalid axis argument. Volumes only have 3 axes.")
 
@@ -1151,7 +1329,7 @@ def concatenate(vols, axis=2, prec=None, move=False):
             "concatenated."
         )
     mat = vols[0].affine[:3,:3]
-
+    
     if not move:
         # Check that all volumes are correctly aligned.
         pos = [v.affine[:3,3] for v in vols]
@@ -1164,15 +1342,171 @@ def concatenate(vols, axis=2, prec=None, move=False):
             if dist > 0:
                 raise ValueError(
                     "Volumes cannot be concatenated. They are not aligned in "
-                    "the direction of concatenation. Set move=True if want to "
-                    "allow them to move to the correct position."
-                )
-        
+                    "the direction of concatenation. Set move=True if you "
+                    "want to allow them to move to the correct position.")
+            
     # Determine concatenation and return new volume
     affine = vols[0].affine
     values = np.concatenate([v.values for v in vols], axis=axis)
-
     return Volume3D(values, affine)  
+
+
+def stack(vols, axis=3, prec=None, move=False):
+    """Stack a sequence volumes at the same location along a new time axis.
+
+    Args:
+        vols (sequence of volumes): Volumes to concatenate.
+        axis (int, optional): The axis along which the volumes will be 
+          stacked. This must be larger than 2.
+        prec (int, optional): precision to consider when comparing positions 
+          and orientations of volumes. All differences are rounded off to this 
+          digit before comparing them to zero. If this is not specified, 
+          floating-point precision is used. Defaults to None.
+        move (bool, optional): If this is set to True, the volumes are allowed 
+          to move to the correct positions for concatenation. In this case 
+          the first volume in the sequence will be fixed, and all others will 
+          move to align with it. If move=False, volumes can only be 
+          concatenated if they are already aligned in the direction of 
+          concatenation without gaps between them, and in the correct order. 
+          Defaults to False.
+
+    Returns:
+        Volume3D: The concatenated volume.
+    """
+    if isinstance(vols, Volume3D):
+        return vols
+    
+    # Check arguments
+    if not np.iterable(vols):
+        raise ValueError(
+            "vreg.stack() requires an iterable as argument.")
+    if axis in [0,1,2]:
+        raise ValueError(
+            "Volumes cannot be stacked along a new space dimension. "
+            "Consider using concatenate instead.")
+
+    # Check that all volumes have the same shape and orientation
+    if prec is None:
+        mat = [v.affine[:3,:3].tolist() for v in vols]  
+    else:
+        mat = [np.around(v.affine[:3,:3], prec).tolist() for v in vols]
+    mat = [x for i, x in enumerate(mat) if i==mat.index(x)]
+    if len(mat) > 1:
+        raise ValueError(
+            "Volumes with different orientations or voxel sizes cannot be "
+            "stacked."
+        )
+    
+    if not move:
+        # Check that all volumes are at the same position  
+        for v in vols[1:]:
+            dist = v.affine[:3,3] - vols[0].affine[:3,3]
+            dist = np.linalg.norm(dist)
+            if prec is not None:
+                dist = np.around(dist, prec)
+            if dist > 0:
+                raise ValueError(
+                    "Volumes cannot be concatenated in a time direction. "
+                    "They are not all at the same position. Set move=True "
+                    "if you want to allow them to move to the correct "
+                    "position.")
+
+    # Determine concatenation and return new volume
+    affine = vols[0].affine
+    values = np.stack([v.values for v in vols], axis=axis)
+    return Volume3D(values, affine)  
+
+
+def join(vols:np.ndarray):
+    """Join multiple volumes into a single volume.
+
+    This is the opposite operation to split
+
+    Args:
+        vols (array of volumes): Volumes to join. 
+
+    Returns:
+        Volume3D: A single volume.
+    """
+
+    # Concatenate along the z dimension
+    shape = vols.shape
+    vols = vols.reshape((shape[0],-1))
+    vols_stack = []
+    for k in range(vols.shape[1]):
+        vstack = concatenate(vols[:,k], axis=2, prec=3) 
+        vols_stack.append(vstack)
+    if len(shape) == 1:
+        return vols_stack[0]
+    else:
+        vols = np.asarray(vols_stack).reshape(shape[1:])
+        
+    # Stack along the other dimensions
+    axis = 3
+    while True:
+        shape = vols.shape
+        vols = vols.reshape((shape[0],-1))
+        vols_stack = []
+        for k in range(vols.shape[1]):
+            vstack = stack(vols[:,k], axis=axis, prec=3) 
+            vols_stack.append(vstack)
+        if len(shape) == 1:
+            return vols_stack[0]
+        else:
+            vols = np.asarray(vols_stack).reshape(shape[1:])
+            axis += 1
+
+
+def mean(vol:Volume3D, axis=None):
+    vals = np.mean(vol.values, axis=axis)
+    if axis is None:
+        vals = np.full(vol.shape, vals)
+    elif axis < 3:
+        vals = np.expand_dims(vals, axis=axis)
+    return Volume3D(vals, vol.affine.copy())
+
+# def asarray(vol):
+    
+#     if isinstance(vol, Volume3D):
+#         return vol.values
+    
+#     vol = np.asarray(vol)
+
+#     # Check that all affines are the same
+#     uniq = np.unique([v.affine for v in vol.reshape(-1)])
+#     if uniq.size>1:
+#         raise ValueError("Cannot extract an array from volumes that have "
+#                          "different affines.")
+    
+#     # Check that all shapes are the same
+#     uniq = np.unique([v.shape for v in vol.reshape(-1)])
+#     if uniq.size>1:
+#         raise ValueError("Cannot extract an array from volumes that have "
+#                          "different shapes.")
+
+#     # Build n-dimensional array
+#     shape = vol.shape
+#     arr = np.stack([v.values for v in vol.reshape(-1)], axis=-1)
+#     return arr.reshape(arr.shape[:3] + shape)
+
+
+# def asvolume(arr:np.ndarray, affine):
+#     if arr.ndim <= 3:
+#         return volume(arr, affine)
+#     shape = arr.shape[3:]
+#     arr = arr.reshape((arr.shape[:3], -1))
+#     vol = [volume(arr[...,k], affine) for k in range(arr.shape[-1])]
+#     return np.asarray(vol).reshape(shape)
+
+
+def _take_view(arr, i, axis):
+    # alternative to np.take() which returns a view
+    # Create a tuple of slice(None) (which selects all elements) for each axis
+    index = [slice(None)] * arr.ndim
+    # Replace the desired axis with the scalar index
+    index[axis] = i
+    return arr[tuple(index)]  # Returns a view
+
 
 
 
